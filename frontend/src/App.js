@@ -75,6 +75,7 @@ const Container = styled("div")`
   text-align: center;
   background: linear-gradient(white, #DCDEFF);
   padding: 3vh 5vw;
+  height: 100%;
 `;
 
 const BodyBox = styled("div")`
