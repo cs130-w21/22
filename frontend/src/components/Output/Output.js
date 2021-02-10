@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import styled from "@emotion/styled";
-import { colors } from "../constants/styles";
+import { colors } from "../../constants/styles";
 
 const Output = () => {
     return (

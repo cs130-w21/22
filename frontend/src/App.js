@@ -3,8 +3,8 @@ import styled from "@emotion/styled";
 
 import { colors } from "./constants/styles";
 
-import Input from './components/Input';
-import Output from './components/Output';
+import Input from './components/Input/Input';
+import Output from './components/Output/Output';
 
 function App() {
   return (
