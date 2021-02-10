@@ -1,0 +1,40 @@
+.field {
+  width: 100%;
+  height: 56px;
+  border-radius: 4px;
+  position: relative;
+  background-color: rgba(255,255,255,0.3);
+  transition: 0.3s all;
+}
+.field:hover {
+  background-color: rgba(255, 255, 255, 0.45);
+  box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.05);
+}
+
+.nav-tabs {
+    border-bottom: 4px solid #444ACA;
+}
+
+.nav-link.active {
+    color: white !important;
+    background-color: #444ACA !important;
+    border-color: #dee2e6 #dee2e6 #fff;
+    border-bottom: 11px solid #444ACA !important;
+    font-weight: bold;
+}
+
+.nav-link {
+    display: block;
+    width: 50%;
+}
+
+.nav-tabs .nav-link {
+    margin-bottom: -1px;
+    border: none !important;
+}
+
+.nav-tabs a{
+	color: white !important;
+	background-color: #C5C5C5!important;
+	font-weight: bold;
+}

@@ -73,7 +73,7 @@ const Logo = styled("img")`
 
 const Container = styled("div")`
   text-align: center;
-  background-color: ${colors.LIGHT_BLUE};
+  background: linear-gradient(white, #DCDEFF);
   padding: 3vh 5vw;
 `;
 
