@@ -13,4 +13,8 @@ def metrics(eval_pred):
   return {'accuracy':accuracy, 'f1':f1, 'roc_aoc':roc_aoc, 'precision':prec, 'recall':recall}
 
 
-# TODO: create clause splitter that takes EULA files and returns a list of clauses.
+# takes EULA string and returns a list of clauses.
+def getClauses(eula_str):
+  clauses = eula_str.split('\n')
+  nonempty_clauses = list(filter(lambda x : x != '', clauses))
+  return nonempty_clauses
