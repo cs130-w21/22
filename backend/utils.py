@@ -18,3 +18,14 @@ def getClauses(eula_str):
   clauses = eula_str.split('\n')
   nonempty_clauses = list(filter(lambda x : x != '', clauses))
   return nonempty_clauses
+
+# not sure about this
+def classify(eula_str, model):
+  clauses = getClauses(eula_str)
+  bad_clauses = []
+  score = 0  # Acceptable
+  for clause in clauses:
+    if model.predict(clause) == 1:
+      score = 1
+      bad_clauses.append(clause)
+  return score, bad_clauses
