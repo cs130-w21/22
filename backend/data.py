@@ -8,18 +8,32 @@ from cfg import config
 
 
 class EULADataset(Dataset):
-    def __init__(self, text, labels, tokenizer):
-      self.encodings = tokenizer(text, truncation=True, padding=True)
-      self.labels = labels
+  def __init__(self, text, labels, tokenizer):
+    self.encodings = tokenizer(text, truncation=True, padding=True)
+    self.labels = labels
 
-    def __getitem__(self, idx):
-      item = {key: torch.tensor(val[idx]) for key, val in self.encodings.items()}
-      item['labels'] = torch.tensor(self.labels[idx])
-      return item
+  def __getitem__(self, idx):
+    item = {key: torch.tensor(val[idx]) for key, val in self.encodings.items()}
+    item['labels'] = torch.tensor(self.labels[idx])
+    return item
 
-    def __len__(self):
-      return len(self.labels)
+  def __len__(self):
+    return len(self.labels)
 
+class InferenceDataset(Dataset):
+  def __init__(self, text, tokenizer):
+    self.encodings = tokenizer(text, truncation=True, padding=True)
+
+  def __getitem__(self, idx):
+    item = {key: torch.tensor(val[idx]) for key, val in self.encodings.items()}
+    return item
+
+  def __len__(self):
+    return len(self.encodings['input_ids'])
+
+
+def get_tokenizer():
+  return transformers.DistilBertTokenizerFast.from_pretrained(config['model_checkpoint'])
 
 def get_train_val_test_datasets():
   # Read EULA training data.
@@ -38,7 +52,7 @@ def get_train_val_test_datasets():
   val_text, val_labels = (list(val['Clause Text']), list(val['Classification']))
   test_text, test_labels = (list(test['Clause Text']), list(test['Classification']))
 
-  tokenizer = transformers.DistilBertTokenizerFast.from_pretrained(config['model_checkpoint'])
+  tokenizer = get_tokenizer()
   trainset  = EULADataset(train_text, train_labels, tokenizer)
   valset    = EULADataset(val_text, val_labels, tokenizer)
   testset   = EULADataset(test_text, test_labels, tokenizer)
