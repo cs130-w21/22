@@ -1,66 +1,31 @@
+/* 
+* Styling of React bootstrap tabs 
+* TODO: Get rid of CSS file and style with Emotion.js
+*/
 
-/* Tabs Styling */
 .nav-tabs {
-    border-bottom: 4px solid #444ACA;
+	border-bottom: 4px solid #444aca;
 }
 
 .nav-link.active {
-    color: white !important;
-    background-color: #444ACA !important;
-    border-color: #dee2e6 #dee2e6 #fff;
-    border-bottom: 11px solid #444ACA !important;
-    font-weight: bold;
-}
-
-.nav-link {
-    display: block;
-    width: 50%;
-}
-
-.nav-tabs .nav-link {
-    margin-bottom: -1px;
-    border: none !important;
-}
-
-.nav-tabs a{
-	color: white !important;
-	background-color: #C5C5C5!important;
+	color: #ffffff !important;
+	background: linear-gradient(#575fff, #444aca) !important;
+	border-bottom: 11px solid #444aca !important;
 	font-weight: bold;
 }
 
-/* Textarea Styling */
-textarea.field {
-  width: 100%;
-  resize: none;
-  height: 50vh; /*Update height to reflect grandpare div size*/
-  border: none !important;
-  border:1px solid red;
+.nav-link {
+	display: block;
+	width: 50%;
 }
 
-
-textarea.field:focus {
-    outline: none !important;
-    border:1px solid red;
+.nav-tabs .nav-link {
+	margin-bottom: -1px;
+	border: none !important;
 }
 
-/* Button Styling */
-
-.calculateButton{
-  background: linear-gradient(#575FFF, #444ACA);
-  color: white;
-  margin-top: 3vh;
-  border: none !important;
-  font-weight: bold;
-  width: 100%;
-  border-radius: 3.5px;
-  padding: 10px 0;
-  opacity: 1;
-  transition: 0.3s;
+.nav-tabs a {
+	color: #ffffff !important;
+	background-color: #c5c5c5 !important;
+	font-weight: bold;
 }
-
-.calculateButton:hover {
-  opacity: 0.8;
-}
-
-
-
