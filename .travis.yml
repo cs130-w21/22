@@ -1,3 +1,7 @@
+#Install Dependencies
+install:
+
+# Run Tests
 script:
   - echo 'Travis is not actually doing anything yet, ignore below'
   - echo 'Testing Backend...'
