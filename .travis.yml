@@ -1,0 +1,5 @@
+script:
+  - echo 'Travis is not actually doing anything yet, ignore below'
+  - echo 'Testing Backend...'
+  - echo 'Installing Dependencies...'
+  - echo 'Running Test Cases...'
