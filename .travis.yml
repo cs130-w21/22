@@ -1,9 +1,35 @@
-#Install Dependencies
+# Install Dependencies
 install:
 
+# multiple languages?
+jobs:
+  include:
+    - language: python
+      python: 3.8
+      script:
+      - python -c "print('Hi from Python!')"
+
+    - language: node_js
+      node_js: 12
+      script:
+      - node -e "console.log('Hi from NodeJS!')"
+
+    - language: java
+      jdk: openjdk8
+      script:
+      - javac -help
+      
 # Run Tests
 script:
   - echo 'Travis is not actually doing anything yet, ignore below'
   - echo 'Testing Backend...'
   - echo 'Installing Dependencies...'
   - echo 'Running Test Cases...'
+  
+after_success:
+  - echo 'Build Passed'
+  
+after_failure:
+  - echo 'f'
+  
+deploy:
