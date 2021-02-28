@@ -10,6 +10,9 @@ jobs:
       python: 3.8
       script:
       - python -c "print('Hi from Python!')"
+      - cd backend
+      - python -m py_compile *.py
+      - python -c "print('Backend syntax correct')"
      #- python ./test.py 
 
     - stage: "Testing"
@@ -18,8 +21,11 @@ jobs:
       node_js: 12
       script:
       - node -e "console.log('Hi from NodeJS!')"
+      - cd frontend
+      - yarn test
       
     - stage: "Even More Testing"
+      if: false
       name: "Other Tests"
       script:
       - echo "Running More Tests"
