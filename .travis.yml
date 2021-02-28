@@ -8,8 +8,6 @@ jobs:
     - stage: "Testing"
       if: True
       name: "Backend Tests (Python)"
-      language: python
-      python: 3.8
       script:
       - python -c "print('Hi from Python!')"
       - cd backend
