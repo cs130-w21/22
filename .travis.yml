@@ -1,16 +1,12 @@
 # Install Dependencies
 install:
 
-do_test1: true
-do_test2: false
-do_test3: true
-do_deploy: false
-
-# multiple languages?
+# Testing -> More Testing -> Deployment 
 jobs:
   include:
+      # TODO: backend testing
     - stage: "Testing"
-      if: do_test1
+      if: True
       name: "Backend Tests (Python)"
       language: python
       python: 3.8
@@ -21,8 +17,9 @@ jobs:
       - python -c "print('Backend syntax correct')"
      #- python ./test.py 
 
+      # TODO: frontend testing
     - stage: "Testing"
-      if: do_test2
+      if: False
       name: "Frontend Tests (JS)"
       language: node_js
       node_js: 12
@@ -31,24 +28,29 @@ jobs:
       - cd frontend
       - yarn test
       
+      # TODO: ???
     - stage: "Even More Testing"
-      if: do_test3
+      if: False
       name: "Other Tests"
       script:
       - echo "Running More Tests"
       
       # does not deploy because condition is false
+      # TODO: Setup AWS
     - stage: "Deploying"
       script: skip
       deploy: 
+        on: 
+          condition: False
+          branch: master
         provider: s3
-        access_key_id: "YOUR AWS ACCESS KEY"
-        secret_access_key: "YOUR AWS SECRET KEY"
+        access_key_id: 
+          secure: "YOUR ENCRYPTED AWS ACCESS KEY"
+        secret_access_key: 
+          secure: "YOUR ENCRYPTED AWS SECRET KEY"
         bucket: "S3 Bucket"
         skip_cleanup: true
-        on: 
-          condition: do_deploy
-
+        
     
       
 after_success:
