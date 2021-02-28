@@ -38,10 +38,10 @@ jobs:
       # does not deploy because condition is false
       # TODO: Setup AWS
     - stage: "Deploying"
+      if: False
       script: skip
       deploy: 
-        if: False
-        # if: branch = master
+        if: branch = master
         provider: s3
         access_key_id: 
           secure: "YOUR ENCRYPTED AWS ACCESS KEY"
