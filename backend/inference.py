@@ -1,5 +1,6 @@
 import numpy as np
 import transformers
+from transformers import pipeline
 
 from data import get_tokenizer, InferenceDataset
 from models import get_pretrained_model
@@ -10,6 +11,7 @@ class Inference():
     # self.model = get_pretrained_model()
     self.tokenizer = get_tokenizer()
     self.model = transformers.Trainer(model=get_pretrained_model())
+    self.summarizer = pipeline("summarization") # ~1.2 GB download the first time this is run.
 
   def getEthicalityClassification(self, e):
     text = e.getText()  # EULA clauses separated by newlines.
@@ -23,6 +25,11 @@ class Inference():
       return 'unethical'
     else:
       return 'ethical'
+
+  def getEULASummary(self, e):
+    text = e.getText()  # EULA clauses separated by newlines.
+    summary = summarizer(text, min_length=10, max_length=10 + min(140, len(text) // 3))
+    return summary[0]['summary_text']
 
 
 class EULA:
