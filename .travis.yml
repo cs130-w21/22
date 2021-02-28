@@ -1,10 +1,16 @@
 # Install Dependencies
 install:
 
+do_test1: true
+do_test2: false
+do_test3: true
+do_deploy: false
+
 # multiple languages?
 jobs:
   include:
     - stage: "Testing"
+      if: do_test1
       name: "Backend Tests (Python)"
       language: python
       python: 3.8
@@ -16,6 +22,7 @@ jobs:
      #- python ./test.py 
 
     - stage: "Testing"
+      if: do_test2
       name: "Frontend Tests (JS)"
       language: node_js
       node_js: 12
@@ -25,7 +32,7 @@ jobs:
       - yarn test
       
     - stage: "Even More Testing"
-      if: false
+      if: do_test3
       name: "Other Tests"
       script:
       - echo "Running More Tests"
@@ -40,7 +47,7 @@ jobs:
         bucket: "S3 Bucket"
         skip_cleanup: true
         on: 
-          condition: false
+          condition: do_deploy
 
     
       
