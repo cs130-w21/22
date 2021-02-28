@@ -40,9 +40,7 @@ jobs:
     - stage: "Deploying"
       script: skip
       deploy: 
-        on: 
-          condition: False
-          branch: master
+        if: False && branch = master
         provider: s3
         access_key_id: 
           secure: "YOUR ENCRYPTED AWS ACCESS KEY"
