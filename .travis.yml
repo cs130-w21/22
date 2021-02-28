@@ -24,7 +24,7 @@ jobs:
       script:
       - echo "Running More Tests"
 
-    # does not deploy because condition : false
+    # does not deploy because condition is false
     - stage: "Deploying"
       script: skip
       deploy:
@@ -34,7 +34,6 @@ jobs:
         bucket: "S3 Bucket"
         skip_cleanup: true
         on: 
-          branch: master
           condition: false
       
 after_success:
