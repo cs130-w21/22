@@ -16,13 +16,13 @@ from pdfminer.pdfparser import PDFParser
 # https://pdfminersix.readthedocs.io/en/latest/tutorial/composable.html
 
 # Trims any beginning non-alphabet letters
-def trim(string:str):
+def trim(line):
     index = 0
-    for i in range(len(string)):
-      if string[i].isalpha():
+    for i in range(len(line)):
+      if line[i].isalpha():
         break
       index = index + 1
-    return string[index:]
+    return line[index:]
 
 # Processes text to better fit inference's expected value
 def processText(text):

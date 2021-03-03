@@ -5,7 +5,6 @@ import urllib.request
 
 UPLOAD_FOLDER = '/tmp'
 app = Flask(__name__)
-app.config["DEBUG"] = True
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/pdf', methods=['POST'])
