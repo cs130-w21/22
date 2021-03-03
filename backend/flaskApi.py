@@ -5,7 +5,6 @@ import urllib.request
 
 UPLOAD_FOLDER = '/tmp'
 app = Flask(__name__)
-app.config["DEBUG"] = True
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/pdf', methods=['POST'])
@@ -37,6 +36,8 @@ def analyzePdf():
     infer = inference.Inference()
     classification = infer.getEthicalityClassifiation(eula)
     summary = infer.getEULASummary(eula)
+    classification = eula.getText()
+    summary = eula.getText()
     
     # Delete file
     os.remove(UPLOAD_FOLDER + '/' + filename)
