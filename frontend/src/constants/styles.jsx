@@ -10,6 +10,8 @@ export const colors = {
 	DARKER_PURPLE: '#444aca',
 	CHARCOAL: '#474747',
 	GRAY: '#999999',
+	GREEN: '#9EBEAF',
+	YELLOW: '#FFCBA1',
 };
 
 // TODO: Add fonts
