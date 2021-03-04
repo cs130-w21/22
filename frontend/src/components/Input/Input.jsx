@@ -1,6 +1,7 @@
-import React, {Component} from 'react';
+import React, {Component, useState} from 'react';
 import styled from '@emotion/styled';
 import {Tabs, Tab, Tooltip} from 'react-bootstrap';
+import Dropzone from 'react-dropzone';
 
 import {colors} from '../../constants/styles';
 import {input} from '../../constants/input-mode';
@@ -52,6 +53,23 @@ class Input extends Component {
 		this.setState({inputType: key});
 	};
 
+	handleDrop = (acceptedFiles, rejectedFiles) => {
+		if (acceptedFiles) {
+			if (acceptedFiles.length != 1) {
+				console.log('Cannot upload multiple files');
+				return;
+			}
+			this.setState({file: acceptedFiles[0]});
+			this.setState({isFileSelected: true});
+			console.log('ACCEPTED FILE', acceptedFiles[0]);
+		}
+		if (rejectedFiles && rejectedFiles.length) {
+			rejectedFiles.map((file) => {
+				console.log('ERROR', file.errors);
+			});
+		}
+	};
+
 	render() {
 		return (
 			<div>
@@ -61,7 +79,36 @@ class Input extends Component {
 							<TextInput placeholder="Paste your agreement" onChange={this.updateText} value={this.state.text} />
 						</Tab>
 						<Tab eventKey={input.FILE} title="UPLOAD PDF">
-							<input type="file" onChange={this.getFile} />
+							<UploadContainer>
+								<Dropzone onDrop={this.handleDrop} multiple="false" accept="application/pdf">
+									{({getRootProps, getInputProps}) => (
+										<div {...getRootProps({className: 'dropzone'})}>
+											<input {...getInputProps()} />
+											<FileImage src="files.png" />
+											<DragAndDropText>Drag and drop your file here</DragAndDropText>
+											<OrText>or</OrText>
+											<BrowseComputerText>Browse your computer</BrowseComputerText>
+										</div>
+									)}
+								</Dropzone>
+								{/* <input type="file" onChange={this.getFile} /> */}
+
+								{this.state.file && (
+									<UploadedFileBox>
+										<UploadedFileBoxLeft>
+											<PDFImage src="pdf.png" />
+										</UploadedFileBoxLeft>
+										<UploadedFileBoxRight>
+											<UploadedFileBoxRightTop>
+												<FileName>{this.state.file.name}</FileName>
+												<Percentage>0%</Percentage>
+											</UploadedFileBoxRightTop>
+											<Uploading>UPLOADING</Uploading>
+											<UploadBar />
+										</UploadedFileBoxRight>
+									</UploadedFileBox>
+								)}
+							</UploadContainer>
 						</Tab>
 					</Tabs>
 				</Container>
@@ -79,8 +126,91 @@ class Input extends Component {
 	}
 }
 
+const UploadedFileBoxRightTop = styled.div`
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+`;
+
+const UploadedFileBoxRight = styled.div`
+	width: 80%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+`;
+
+const Uploading = styled.div`
+	font-size: 10px;
+	letter-spacing: 1px;
+	color: ${colors.GRAY};
+	text-align: left;
+`;
+
+const UploadBar = styled.div`
+	width: 100%;
+	height: 6px;
+	background-color: ${colors.LIGHTER_GRAY};
+`;
+
+const FileName = styled.div`
+	color: ${colors.CHARCOAL};
+`;
+
+const Percentage = styled.div`
+	color: ${colors.GRAY};
+`;
+
+const UploadedFileBox = styled.div`
+	height: 50px;
+	width: 80%;
+	margin-left: auto;
+	margin-right: auto;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+`;
+
+const UploadedFileBoxLeft = styled.div`
+	width: 15%;
+`;
+
+const PDFImage = styled.img`
+	height: 100%;
+`;
+
+const UploadContainer = styled.div`
+	height: 380px;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	padding-top: 26px;
+	padding-bottom: 22px;
+`;
+
+const FileImage = styled.img`
+	width: 14vw;
+	height: auto;
+	margin-left: auto;
+	margin-right: auto;
+`;
+
+const DragAndDropText = styled.div`
+	color: ${colors.CHARCOAL};
+	margin-top: 20px;
+`;
+
+const OrText = styled.div`
+	color: ${colors.GRAY};
+`;
+
+const BrowseComputerText = styled.div`
+	color: ${colors.DARKER_PURPLE};
+`;
+
 const Container = styled.div`
-	height: 90%;
+	height: 420px;
 	width: 36vw;
 	background-color: ${colors.WHITE};
 `;
