@@ -70,7 +70,7 @@ class Inference():
 
   def getEULASummary(self, e):
     text = e.getText()  # EULA clauses separated by newlines.
-    summary = summarizer(text, min_length=10, max_length=10 + min(140, len(text) // 3))
+    summary = self.summarizer(text, min_length=10, max_length=10 + min(140, len(text) // 3))
     return summary[0]['summary_text']
 
 

@@ -6,6 +6,8 @@ import Dropzone from 'react-dropzone';
 import {colors} from '../../constants/styles';
 import {input} from '../../constants/input-mode';
 
+import axios from 'axios';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Input.css';
 
@@ -38,7 +40,22 @@ class Input extends Component {
 		if (this.state.inputType === input.TEXT) {
 			if (this.state.text.length > 0) {
 				alert('Do something with this input text: ' + this.state.text);
-				// TODO: send this text to the server
+				axios.post("/text",
+					{text: this.state.text},
+					{
+						headers: {
+						"Content-type": "application/json; charset=UTF-8",
+						"Access-Control-Allow-Origin": "*",
+						"Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
+						}
+					}
+					).then((response) => {
+					console.log(response.data);
+					}, (error) => {
+					console.log(error);
+					});
+				
+				
 			}
 		}
 		if (this.state.inputType === input.FILE) {

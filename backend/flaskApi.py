@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 import inference
 import os
 import urllib.request
+import json
 
 UPLOAD_FOLDER = '/tmp'
 app = Flask(__name__)
@@ -46,10 +47,16 @@ def analyzePdf():
 
 @app.route('/text', methods=['POST'])
 def analyzeText():
-    if 'text' not in request.form:
+    fd = open("temp_json.txt", 'r')
+    request_data = json.load(fd)
+    fd.close()
+    
+    print(request_data)
+
+    if 'text' not in request_data:
         return jsonify({'classification':'None', 'summary':'None', 'error':'Text not included in request.'})
 
-    text = request.form['text']
+    text = request_data['text']
     
     if not isinstance(text, str):
         return jsonify({'classification':'None', 'summary':'None', 'error':'Data in incorrect format'})
