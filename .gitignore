@@ -1,2 +1,5 @@
 .DS_Store
 /.vscode
+backend/*.tar.gz
+backend/saved_models
+backend/__pycache__
