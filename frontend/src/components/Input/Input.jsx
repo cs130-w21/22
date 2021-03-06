@@ -58,10 +58,29 @@ class Input extends Component {
 				
 			}
 		}
-		if (this.state.inputType === input.FILE) {
+		// if (this.state.inputType === input.FILE) {
+		else{
 			if (this.state.isFileSelected && this.state.file !== null) {
 				alert('Sending file!');
-				// TODO: send this file over the server
+				const formData = new FormData();
+					formData.append(
+			        "file",
+			        this.state.file,
+			        this.state.file.name
+		      	);
+				axios.post("/pdf",formData,
+					{
+						headers: {
+						"Content-type": "application/json; charset=UTF-8",
+						"Access-Control-Allow-Origin": "*",
+						"Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
+						}
+					}
+				).then((response) => {
+				console.log(response.data);
+				}, (error) => {
+				console.log(error);
+				});
 			}
 		}
 	};
@@ -132,8 +151,8 @@ class Input extends Component {
 				<CalculateButton
 					onClick={this.sendInput}
 					disabled={
-						(this.state.inputType == input.TEXT && !this.state.text) ||
-						(this.state.inputType == input.FILE && !this.state.isFileSelected)
+						(this.state.inputType == input.TEXT && this.state.text.length === 0) ||
+						(this.state.inputType == input.FILE && this.state.isFileSelected === null)
 					}
 				>
 					CALCULATE

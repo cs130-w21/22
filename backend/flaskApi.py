@@ -10,7 +10,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/pdf', methods=['POST'])
 def analyzePdf():
-    # Check if file exists
+    # Check if file exist
     if 'file' not in request.files:
         return jsonify({'classification':'None', 'summary':'None', 'error':'Files not included in Request.'})
     
