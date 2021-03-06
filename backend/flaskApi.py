@@ -3,6 +3,7 @@ import inference
 import os
 import urllib.request
 import json
+import time # temp
 
 UPLOAD_FOLDER = '/tmp'
 app = Flask(__name__)
@@ -48,7 +49,6 @@ def analyzePdf():
 @app.route('/text', methods=['POST'])
 def analyzeText():
     request_data = request.get_json()
-    
     print(request_data)
 
     if 'text' not in request_data:
@@ -69,6 +69,12 @@ def analyzeText():
 
     # Format return message    
     return jsonify({'classification':classification, 'summary':summary, 'error':'None'})
+
+@app.route('/text_dummy', methods=['POST'])
+def analyzeTextDummy():
+	# For testing frontend
+	time.sleep(3)
+	return jsonify({'classification':'ethical', 'summary':'Dummy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text.', 'error':'None'})
 
 if __name__ == '__main__':
     app.run()
