@@ -6,24 +6,22 @@ class Output extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			ethicalityScore: 80,
-			confidenceScore: 60,
-			points: [
-				'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ',
-				"Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-				'It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.',
-				"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-			],
+			classification: this.props.summary_value.classification,
+			error: this.props.summary_value.error,
+			summary: this.props.summary_value.summary
 		};
 	}
 
+
+
 	render() {
+		console.log(this.props)
 		return (
 			<Container>
 				<TopBar />
 				<BelowTopBar>
 					<YourEulaAnalysis>YOUR EULA ANALYSIS</YourEulaAnalysis>
-					<Header>ETHICALITY SCORE</Header>
+					{/*<Header>ETHICALITY SCORE</Header>
 					<PercentageBar>
 						<PercentageBarInner widthPercentage={this.state.ethicalityScore} color="#9EBEAF">
 							<PercentageNumber>{this.state.ethicalityScore}%</PercentageNumber>
@@ -34,19 +32,38 @@ class Output extends Component {
 						<PercentageBarInner widthPercentage={this.state.confidenceScore} color="#FFCBA1">
 							<PercentageNumber>{this.state.confidenceScore}%</PercentageNumber>
 						</PercentageBarInner>
-					</PercentageBar>
+					</PercentageBar>*/}
+					<Header>
+						YOUR EULA IS:
+						<EthicalityBanner ethical_value={this.state.classification}> 
+							{this.state.classification.charAt(0).toUpperCase() + this.state.classification.slice(1)}
+						</EthicalityBanner>
+					</Header> 
 					<Header>SUMMARY</Header>
-					{this.state.points.map((point) => (
-						<SummaryPoint>
-							<BulletPoint />
-							<SummaryText>{point}</SummaryText>
-						</SummaryPoint>
-					))}
+					<SummaryPoint>
+						<SummaryText>{this.state.summary}</SummaryText>
+					</SummaryPoint>
 				</BelowTopBar>
 			</Container>
 		);
 	}
 }
+
+const gang = (value) => {
+	if(value === "unethical") {
+		return "#ff9e8e";
+	}
+	if(value === "ethical") {
+		return "#9EBEAF";
+	}
+	
+}
+const EthicalityBanner = styled.span`
+
+	background-color: ${(props) => gang(props.ethical_value) };
+	padding: 1.5% 9%;
+	margin-left: 40px;
+`;
 
 const BulletPoint = styled.div`
 	width: 8px;
@@ -62,6 +79,7 @@ const SummaryText = styled.div`
 	width: 94%;
 	font-size: 14px;
 	letter-spacing: -0.5px;
+
 `;
 
 const SummaryPoint = styled.div`
@@ -71,6 +89,7 @@ const SummaryPoint = styled.div`
 	flex-direction: row;
 	justify-content: space-between;
 	margin-bottom: 10px;
+	padding: 0px 40px;
 `;
 
 const PercentageNumber = styled.div`

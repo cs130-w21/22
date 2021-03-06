@@ -40,6 +40,7 @@ class Input extends Component {
 		if (this.state.inputType === input.TEXT) {
 			if (this.state.text.length > 0) {
 				alert('Do something with this input text: ' + this.state.text);
+
 				axios.post("/text",
 					{text: this.state.text},
 					{
@@ -51,6 +52,7 @@ class Input extends Component {
 					}
 					).then((response) => {
 					console.log(response.data);
+					this.props.updateShared(response.data)
 					}, (error) => {
 					console.log(error);
 					});
@@ -274,7 +276,7 @@ const CalculateButton = styled.button`
 
 const TextInput = styled('textarea')`
 	width: 100%;
-	height: 100%;
+	height: 50vh;
 	resize: none;
 
 	padding: 5px 10px;
