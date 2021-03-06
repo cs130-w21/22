@@ -47,28 +47,31 @@ def analyzePdf():
 
 @app.route('/text', methods=['POST'])
 def analyzeText():
-    request_data = request.get_json()
+	# TESTING FRONTEND
+	return jsonify({'classification':'unethical', 'summary':'Dummy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text.', 'error':'None'})
+
+    # request_data = request.get_json()
     
-    print(request_data)
+    # print(request_data)
 
-    if 'text' not in request_data:
-        return jsonify({'classification':'None', 'summary':'None', 'error':'Text not included in request.'})
+    # if 'text' not in request_data:
+    #     return jsonify({'classification':'None', 'summary':'None', 'error':'Text not included in request.'})
 
-    text = request_data['text']
+    # text = request_data['text']
     
-    if not isinstance(text, str):
-        return jsonify({'classification':'None', 'summary':'None', 'error':'Data in incorrect format'})
-    elif text == '':
-        return jsonify({'classification':'None', 'summary':'None', 'error':'No text received'})
+    # if not isinstance(text, str):
+    #     return jsonify({'classification':'None', 'summary':'None', 'error':'Data in incorrect format'})
+    # elif text == '':
+    #     return jsonify({'classification':'None', 'summary':'None', 'error':'No text received'})
 
-    # Create EULA class and run inference
-    eula = inference.EULA(text, None)
-    infer = inference.Inference()
-    classification = infer.getEthicalityClassification(eula)
-    summary = infer.getEULASummary(eula)
+    # # Create EULA class and run inference
+    # eula = inference.EULA(text, None)
+    # infer = inference.Inference()
+    # classification = infer.getEthicalityClassification(eula)
+    # summary = infer.getEULASummary(eula)
 
-    # Format return message    
-    return jsonify({'classification':classification, 'summary':summary, 'error':'None'})
+    # # Format return message    
+    # return jsonify({'classification':classification, 'summary':summary, 'error':'None'})
 
 if __name__ == '__main__':
     app.run()

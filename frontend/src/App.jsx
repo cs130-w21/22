@@ -30,28 +30,43 @@ const globalStyles = (
 	/>
 );
 
-function App() {
-	return (
-		<Container>
-			{globalStyles}
-			<HeaderBox>
-				<HeaderTop>
-					<Logo src="logo.png" />
-				</HeaderTop>
-				<HeaderBottom>
-					<Headline>How ethical is your end user license agreement?</Headline>
-				</HeaderBottom>
-			</HeaderBox>
-			<BodyBox>
-				<BodyBoxHalf>
-					<Input />
-				</BodyBoxHalf>
-				<BodyBoxHalf>
-					<Output />
-				</BodyBoxHalf>
-			</BodyBox>
-		</Container>
-	);
+class App extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			outputState: 0 /* 0 = not ready, 1 = valid response, 2 = error */,
+			output: '',
+		};
+		this.handleResponse = this.handleResponse.bind(this);
+	}
+
+	handleResponse(response) {
+		this.setState({output: response});
+	}
+
+	render() {
+		return (
+			<Container>
+				{globalStyles}
+				<HeaderBox>
+					<HeaderTop>
+						<Logo src="logo.png" />
+					</HeaderTop>
+					<HeaderBottom>
+						<Headline>How ethical is your end user license agreement?</Headline>
+					</HeaderBottom>
+				</HeaderBox>
+				<BodyBox>
+					<BodyBoxHalf>
+						<Input getResponse={this.handleResponse} />
+					</BodyBoxHalf>
+					<BodyBoxHalf>
+						<Output updateResponse={this.state.output} />
+					</BodyBoxHalf>
+				</BodyBox>
+			</Container>
+		);
+	}
 }
 
 const HeaderBox = styled('div')`
@@ -85,9 +100,9 @@ const Headline = styled('div')`
 	width: 50%;
 	text-align: center;
 
-	font-size: 36px;
+	font-size: 5.5vh;
 	font-weight: 700;
-	line-height: 48px;
+	line-height: 7vh;
 `;
 
 const Logo = styled('img')`

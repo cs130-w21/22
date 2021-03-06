@@ -6,15 +6,32 @@ class Output extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			ethicalityScore: 80,
-			confidenceScore: 60,
-			points: [
-				'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ',
-				"Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-				'It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.',
-				"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-			],
+			outputState: 0 /* 0 = not ready, 1 = valid response, 2 = error */,
+			error: '',
+			ethical: 'ethical',
+			summary:
+				'Company will notify Customer before Customer exceeds the Title Request Use Limit indicated on the Order Form. Company will invoice Customer for Overages on written notice (which may be by email). If, after 30 days from the date of that written notice, Company may stop providing the Service to the Customer',
 		};
+	}
+
+	componentWillReceiveProps(props) {
+		let response = props.updateResponse;
+		if (response.error == 'None') {
+			this.setState({
+				outputState: 1,
+				error: '',
+				ethical: response.classification,
+				summary: response.summary,
+			});
+		} else {
+			this.setState({
+				outputState: 2,
+				error: response.error,
+				ethical: '',
+				summary: '',
+			});
+		}
+		console.log('PROPS:', props.updateResponse.classification);
 	}
 
 	render() {
@@ -22,107 +39,97 @@ class Output extends Component {
 			<Container>
 				<TopBar />
 				<BelowTopBar>
-					<YourEulaAnalysis>YOUR EULA ANALYSIS</YourEulaAnalysis>
-					<Header>ETHICALITY SCORE</Header>
-					<PercentageBar>
-						<PercentageBarInner widthPercentage={this.state.ethicalityScore} color="#9EBEAF">
-							<PercentageNumber>{this.state.ethicalityScore}%</PercentageNumber>
-						</PercentageBarInner>
-					</PercentageBar>
-					<Header>CONFIDENCE SCORE</Header>
-					<PercentageBar>
-						<PercentageBarInner widthPercentage={this.state.confidenceScore} color="#FFCBA1">
-							<PercentageNumber>{this.state.confidenceScore}%</PercentageNumber>
-						</PercentageBarInner>
-					</PercentageBar>
-					<Header>SUMMARY</Header>
-					{this.state.points.map((point) => (
-						<SummaryPoint>
-							<BulletPoint />
-							<SummaryText>{point}</SummaryText>
-						</SummaryPoint>
-					))}
+					{this.state.outputState == 0 && <div>not ready</div>}
+					{this.state.outputState == 1 && (
+						<>
+							<YourEulaAnalysis>Your EULA Analysis</YourEulaAnalysis>
+							<EulaAnalysisTop>
+								<Header>Your EULA is:</Header>
+								<EthicalityBar ethical={this.state.ethical}>{this.state.ethical}</EthicalityBar>
+							</EulaAnalysisTop>
+							<EulaAnalysisBottom>
+								<Header>Summary:</Header>
+								<SummaryText>{this.state.summary}</SummaryText>
+							</EulaAnalysisBottom>
+						</>
+					)}
+					{this.state.outputState == 2 && (
+						<>
+							<div>{this.state.error}</div>
+						</>
+					)}
 				</BelowTopBar>
 			</Container>
 		);
 	}
 }
 
-const BulletPoint = styled.div`
-	width: 8px;
-	height: 8px;
-	margin-top: 8px;
-	background-color: ${colors.DARK_PURPLE};
-	display: flex;
-	flex-direction: column;
-	justify-content: space-around;
-`;
-
-const SummaryText = styled.div`
-	width: 94%;
-	font-size: 14px;
-	letter-spacing: -0.5px;
-`;
-
-const SummaryPoint = styled.div`
+const YourEulaAnalysis = styled.div`
 	width: 100%;
-	text-align: left;
+	font-weight: bolder;
+	font-size: 4vh;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	color: ${colors.DARKER_PURPLE};
+`;
+
+const EulaAnalysisTop = styled.div`
+	height: 100%;
+	width: 98%;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-	margin-bottom: 10px;
+	margin-top: 3vh;
 `;
 
-const PercentageNumber = styled.div`
+const EthicalityBar = styled.div`
+	height: 5vh;
 	width: 100%;
+	background-color: ${(props) => (props.ethical == 'ethical' ? '#9EBEAF' : '#FFC4BB')};
+	padding-right: 10px;
+	margin-top: 1vh;
+
+	text-transform: uppercase;
 	font-weight: bolder;
 	font-size: 18px;
 	color: ${colors.BLACK};
-	text-align: right;
-	height: 100%;
+	text-align: center;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
-`;
-
-const PercentageBarInner = styled.div`
-	width: ${(props) => props.widthPercentage}%;
-	height: 100%;
-	background-color: ${(props) => props.color};
-	padding-right: 10px;
-`;
-
-const PercentageBar = styled.div`
-	width: 100%;
-	height: 40px;
-	background-color: ${colors.LIGHTER_GRAY};
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-`;
-
-const BelowTopBar = styled.div`
-	width: 100%;
-	padding: 16px 28px;
 `;
 
 const Header = styled.div`
 	width: 100%;
 	font-weight: bolder;
-	font-size: 14px;
+	font-size: 2.5vh;
 	letter-spacing: 1px;
 	color: ${colors.BLACK};
 	text-align: left;
-	margin-top: 14px;
-	margin-bottom: 6px;
+	text-transform: uppercase;
+	/* margin-top: 14px; */
+	/* margin-bottom: 6px; */
 `;
 
-const YourEulaAnalysis = styled.div`
-	width: 100%;
-	font-weight: bolder;
-	font-size: 22px;
-	letter-spacing: 2px;
-	color: ${colors.DARKER_PURPLE};
+const EulaAnalysisBottom = styled.div`
+	margin-top: 3vh;
+`;
+
+const SummaryText = styled.div`
+	width: 94%;
+	font-size: 2.4vh;
+	text-align: left;
+	margin-top: 2vh;
+	margin-left: 2vw;
+`;
+
+/////////
+
+const BelowTopBar = styled.div`
+	margin-left: auto;
+	margin-right: auto;
+	width: 96%;
+	padding: 16px 28px;
 `;
 
 const TopBar = styled.div`
@@ -132,7 +139,7 @@ const TopBar = styled.div`
 `;
 
 const Container = styled.div`
-	height: 480px;
+	height: 74vh;
 	width: 36vw;
 	background-color: ${colors.WHITE};
 	overflow-y: scroll;

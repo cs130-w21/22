@@ -12,6 +12,7 @@ export const colors = {
 	GRAY: '#999999',
 	GREEN: '#9EBEAF',
 	YELLOW: '#FFCBA1',
+	RED: '#ffc4bb',
 };
 
 // TODO: Add fonts
