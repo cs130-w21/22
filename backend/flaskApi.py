@@ -47,9 +47,7 @@ def analyzePdf():
 
 @app.route('/text', methods=['POST'])
 def analyzeText():
-    fd = open("temp_json.txt", 'r')
-    request_data = json.load(fd)
-    fd.close()
+    request_data = request.get_json()
     
     print(request_data)
 
