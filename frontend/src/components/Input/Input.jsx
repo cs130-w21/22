@@ -28,61 +28,55 @@ class Input extends Component {
 		this.setState({text: e.target.value});
 	};
 
-	getFile = (e) => {
-		console.log('INPUT TYPE:', this.state.inputType);
-		console.log(e.target.files[0]);
-		this.setState({file: e.target.files[0]});
-		this.setState({isFileSelected: true});
-	};
-
 	sendInput = (e) => {
 		e.preventDefault();
 		if (this.state.inputType === input.TEXT) {
 			if (this.state.text.length > 0) {
-				alert('Do something with this input text: ' + this.state.text);
-
-				axios.post("/text",
-					{text: this.state.text},
-					{
-						headers: {
-						"Content-type": "application/json; charset=UTF-8",
-						"Access-Control-Allow-Origin": "*",
-						"Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
+				this.props.setCalculating();
+				axios
+					.post(
+						'/text',
+						{text: this.state.text},
+						{
+							headers: {
+								'Content-type': 'application/json; charset=UTF-8',
+								'Access-Control-Allow-Origin': '*',
+								'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+							},
 						}
-					}
-					).then((response) => {
-					console.log(response.data);
-					this.props.updateShared(response.data)
-					}, (error) => {
-					console.log(error);
-					});
-				
-				
+					)
+					.then(
+						(response) => {
+							console.log(response.data);
+							this.props.updateOutput(response.data);
+						},
+						(error) => {
+							console.log(error);
+							this.props.updateOutput(error);
+						}
+					);
 			}
-		}
-		// if (this.state.inputType === input.FILE) {
-		else{
+		} else {
 			if (this.state.isFileSelected && this.state.file !== null) {
 				alert('Sending file!');
 				const formData = new FormData();
-					formData.append(
-			        "file",
-			        this.state.file,
-			        this.state.file.name
-		      	);
-				axios.post("/pdf",formData,
-					{
+				formData.append('file', this.state.file, this.state.file.name);
+				axios
+					.post('/pdf', formData, {
 						headers: {
-						"Content-type": "application/json; charset=UTF-8",
-						"Access-Control-Allow-Origin": "*",
-						"Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
+							'Content-type': 'application/json; charset=UTF-8',
+							'Access-Control-Allow-Origin': '*',
+							'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+						},
+					})
+					.then(
+						(response) => {
+							console.log(response.data);
+						},
+						(error) => {
+							console.log(error);
 						}
-					}
-				).then((response) => {
-				console.log(response.data);
-				}, (error) => {
-				console.log(error);
-				});
+					);
 			}
 		}
 	};
@@ -99,10 +93,10 @@ class Input extends Component {
 			}
 			this.setState({file: acceptedFiles[0]});
 			this.setState({isFileSelected: true});
-			console.log('ACCEPTED FILE', acceptedFiles[0]);
 		}
 		if (rejectedFiles && rejectedFiles.length) {
 			rejectedFiles.map((file) => {
+				// TODO: Handle input error
 				console.log('ERROR', file.errors);
 			});
 		}
@@ -118,34 +112,35 @@ class Input extends Component {
 						</Tab>
 						<Tab eventKey={input.FILE} title="UPLOAD PDF">
 							<UploadContainer>
-								<Dropzone onDrop={this.handleDrop} multiple="false" accept="application/pdf">
-									{({getRootProps, getInputProps}) => (
-										<div {...getRootProps({className: 'dropzone'})}>
-											<input {...getInputProps()} />
-											<FileImage src="files.png" />
-											<DragAndDropText>Drag and drop your file here</DragAndDropText>
-											<OrText>or</OrText>
-											<BrowseComputerText>Browse your computer</BrowseComputerText>
-										</div>
-									)}
-								</Dropzone>
-								{/* <input type="file" onChange={this.getFile} /> */}
+								<UploadContainerInner>
+									<Dropzone onDrop={this.handleDrop} multiple="false" accept="application/pdf">
+										{({getRootProps, getInputProps}) => (
+											<div {...getRootProps({className: 'dropzone'})}>
+												<input {...getInputProps()} />
+												<FileImage src="files.png" />
+												<DragAndDropText>Drag and drop your file here</DragAndDropText>
+												<OrText>or</OrText>
+												<BrowseComputerText>Browse your computer</BrowseComputerText>
+											</div>
+										)}
+									</Dropzone>
 
-								{this.state.file && (
-									<UploadedFileBox>
-										<UploadedFileBoxLeft>
-											<PDFImage src="pdf.png" />
-										</UploadedFileBoxLeft>
-										<UploadedFileBoxRight>
-											<UploadedFileBoxRightTop>
-												<FileName>{this.state.file.name}</FileName>
-												<Percentage>0%</Percentage>
-											</UploadedFileBoxRightTop>
-											<Uploading>UPLOADING</Uploading>
-											<UploadBar />
-										</UploadedFileBoxRight>
-									</UploadedFileBox>
-								)}
+									{this.state.file && (
+										<UploadedFileBox>
+											<UploadedFileBoxLeft>
+												<PDFImage src="pdf.png" />
+											</UploadedFileBoxLeft>
+											<UploadedFileBoxRight>
+												<UploadedFileBoxRightTop>
+													<FileName>{this.state.file.name}</FileName>
+													<Percentage>0%</Percentage>
+												</UploadedFileBoxRightTop>
+												<Uploading>UPLOADING</Uploading>
+												<UploadBar />
+											</UploadedFileBoxRight>
+										</UploadedFileBox>
+									)}
+								</UploadContainerInner>
 							</UploadContainer>
 						</Tab>
 					</Tabs>
@@ -157,7 +152,7 @@ class Input extends Component {
 						(this.state.inputType == input.FILE && this.state.isFileSelected === null)
 					}
 				>
-					CALCULATE
+					Calculate
 				</CalculateButton>
 			</div>
 		);
@@ -179,15 +174,16 @@ const UploadedFileBoxRight = styled.div`
 `;
 
 const Uploading = styled.div`
-	font-size: 10px;
-	letter-spacing: 1px;
+	font-size: 1.5vh;
+	letter-spacing: 0.3vh;
+	line-height: 2vh;
 	color: ${colors.GRAY};
 	text-align: left;
 `;
 
 const UploadBar = styled.div`
 	width: 100%;
-	height: 6px;
+	height: 0.75vh;
 	background-color: ${colors.LIGHTER_GRAY};
 `;
 
@@ -200,13 +196,16 @@ const Percentage = styled.div`
 `;
 
 const UploadedFileBox = styled.div`
-	height: 50px;
+	height: 7vh;
 	width: 80%;
 	margin-left: auto;
 	margin-right: auto;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
+	margin-top: 3vh;
+	font-size: 2.5vh;
+	line-height: 3vh;
 `;
 
 const UploadedFileBoxLeft = styled.div`
@@ -217,14 +216,18 @@ const PDFImage = styled.img`
 	height: 100%;
 `;
 
-const UploadContainer = styled.div`
-	height: 380px;
+const UploadContainerInner = styled.div`
+	height: auto;
 	width: 100%;
+`;
+
+const UploadContainer = styled.div`
+	height: 100%;
+	width: 100%;
+	padding: auto;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
-	padding-top: 26px;
-	padding-bottom: 22px;
 `;
 
 const FileImage = styled.img`
@@ -236,7 +239,7 @@ const FileImage = styled.img`
 
 const DragAndDropText = styled.div`
 	color: ${colors.CHARCOAL};
-	margin-top: 20px;
+	margin-top: 5vh;
 `;
 
 const OrText = styled.div`
@@ -248,7 +251,7 @@ const BrowseComputerText = styled.div`
 `;
 
 const Container = styled.div`
-	height: 420px;
+	height: 65vh;
 	width: 36vw;
 	background-color: ${colors.WHITE};
 `;
@@ -259,9 +262,12 @@ const CalculateButton = styled.button`
 	margin-top: 3vh;
 	border: none !important;
 	font-weight: bold;
+	font-size: 2.5vh;
+	text-transform: uppercase;
+	height: 6vh;
 	width: 100%;
 	border-radius: 3.5px;
-	padding: 10px !important;
+	padding: auto;
 	opacity: 1;
 	transition: 0.3s;
 	letter-spacing: 1px !important;
@@ -276,12 +282,11 @@ const CalculateButton = styled.button`
 
 const TextInput = styled('textarea')`
 	width: 100%;
-	height: 50vh;
+	height: 100%;
 	resize: none;
-
+	font-size: 2.5vh;
 	padding: 5px 10px;
 	border: none !important;
-
 	&:focus {
 		outline: none !important;
 	}

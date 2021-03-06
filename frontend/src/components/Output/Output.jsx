@@ -6,142 +6,124 @@ class Output extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			classification: this.props.summary_value.classification,
-			error: this.props.summary_value.error,
-			summary: this.props.summary_value.summary
+			outputState: 0 /* 0 = idle, 1 = calculating, 2 = valid response, 3 = error */,
+			error: '',
+			classification: '',
+			summary: '',
 		};
 	}
 
-
+	componentWillReceiveProps(props) {
+		this.setState(props.updateResponse);
+	}
 
 	render() {
-		console.log(this.props)
 		return (
 			<Container>
 				<TopBar />
 				<BelowTopBar>
-					<YourEulaAnalysis>YOUR EULA ANALYSIS</YourEulaAnalysis>
-					{/*<Header>ETHICALITY SCORE</Header>
-					<PercentageBar>
-						<PercentageBarInner widthPercentage={this.state.ethicalityScore} color="#9EBEAF">
-							<PercentageNumber>{this.state.ethicalityScore}%</PercentageNumber>
-						</PercentageBarInner>
-					</PercentageBar>
-					<Header>CONFIDENCE SCORE</Header>
-					<PercentageBar>
-						<PercentageBarInner widthPercentage={this.state.confidenceScore} color="#FFCBA1">
-							<PercentageNumber>{this.state.confidenceScore}%</PercentageNumber>
-						</PercentageBarInner>
-					</PercentageBar>*/}
-					<Header>
-						YOUR EULA IS:
-						<EthicalityBanner ethical_value={this.state.classification}> 
-							{this.state.classification.charAt(0).toUpperCase() + this.state.classification.slice(1)}
-						</EthicalityBanner>
-					</Header> 
-					<Header>SUMMARY</Header>
-					<SummaryPoint>
-						<SummaryText>{this.state.summary}</SummaryText>
-					</SummaryPoint>
+					{this.state.outputState == 0 && <div>not ready</div>}
+					{this.state.outputState == 1 && (
+						<>
+							{/* TODO (Ruban): Calculating screen */}
+							<div>Calculating</div>
+						</>
+					)}
+					{this.state.outputState == 2 && (
+						<>
+							<YourEulaAnalysis>Your EULA Analysis</YourEulaAnalysis>
+							<EulaAnalysisTop>
+								<Header>Your EULA is:</Header>
+								<EthicalityBar classification={this.state.classification}>{this.state.classification}</EthicalityBar>
+							</EulaAnalysisTop>
+							<EulaAnalysisBottom>
+								<Header>Summary:</Header>
+								<SummaryText>{this.state.summary}</SummaryText>
+							</EulaAnalysisBottom>
+						</>
+					)}
+					{this.state.outputState == 3 && (
+						<>
+							<div>{this.state.error}</div>
+						</>
+					)}
 				</BelowTopBar>
 			</Container>
 		);
 	}
 }
 
-const gang = (value) => {
-	if(value === "unethical") {
-		return "#ff9e8e";
-	}
-	if(value === "ethical") {
-		return "#9EBEAF";
-	}
-	
-}
-const EthicalityBanner = styled.span`
+////////////////////// TODO (Stephanie): Not ready ///////////////////////
 
-	background-color: ${(props) => gang(props.ethical_value) };
-	padding: 1.5% 9%;
-	margin-left: 40px;
-`;
+////////////////////// TODO (Ruban): Calculating ///////////////////////
 
-const BulletPoint = styled.div`
-	width: 8px;
-	height: 8px;
-	margin-top: 8px;
-	background-color: ${colors.DARK_PURPLE};
-	display: flex;
-	flex-direction: column;
-	justify-content: space-around;
-`;
+////////////////////// Valid response ///////////////////////
 
-const SummaryText = styled.div`
-	width: 94%;
-	font-size: 14px;
-	letter-spacing: -0.5px;
-
-`;
-
-const SummaryPoint = styled.div`
+const YourEulaAnalysis = styled.div`
 	width: 100%;
-	text-align: left;
+	font-weight: bolder;
+	font-size: 4vh;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	color: ${colors.DARKER_PURPLE};
+`;
+
+const EulaAnalysisTop = styled.div`
+	height: 100%;
+	width: 98%;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-	margin-bottom: 10px;
-	padding: 0px 40px;
+	margin-top: 3vh;
 `;
 
-const PercentageNumber = styled.div`
+const EthicalityBar = styled.div`
+	height: 5vh;
 	width: 100%;
+	background-color: ${(props) => (props.classification == 'ethical' ? '#9EBEAF' : '#FFC4BB')};
+	padding-right: 10px;
+	margin-top: 1vh;
+	text-transform: uppercase;
 	font-weight: bolder;
 	font-size: 18px;
 	color: ${colors.BLACK};
-	text-align: right;
-	height: 100%;
+	text-align: center;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
-`;
-
-const PercentageBarInner = styled.div`
-	width: ${(props) => props.widthPercentage}%;
-	height: 100%;
-	background-color: ${(props) => props.color};
-	padding-right: 10px;
-`;
-
-const PercentageBar = styled.div`
-	width: 100%;
-	height: 40px;
-	background-color: ${colors.LIGHTER_GRAY};
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-`;
-
-const BelowTopBar = styled.div`
-	width: 100%;
-	padding: 16px 28px;
 `;
 
 const Header = styled.div`
 	width: 100%;
 	font-weight: bolder;
-	font-size: 14px;
+	font-size: 2.5vh;
 	letter-spacing: 1px;
 	color: ${colors.BLACK};
 	text-align: left;
-	margin-top: 14px;
-	margin-bottom: 6px;
+	text-transform: uppercase;
 `;
 
-const YourEulaAnalysis = styled.div`
-	width: 100%;
-	font-weight: bolder;
-	font-size: 22px;
-	letter-spacing: 2px;
-	color: ${colors.DARKER_PURPLE};
+const EulaAnalysisBottom = styled.div`
+	margin-top: 3vh;
+`;
+
+const SummaryText = styled.div`
+	width: 94%;
+	font-size: 2.4vh;
+	text-align: left;
+	margin-top: 2vh;
+	margin-left: 2vw;
+`;
+
+////////////////////// TODO (Stephanie): Error ///////////////////////
+
+////////////////////// General ///////////////////////
+
+const BelowTopBar = styled.div`
+	margin-left: auto;
+	margin-right: auto;
+	width: 96%;
+	padding: 16px 28px;
 `;
 
 const TopBar = styled.div`
@@ -151,7 +133,7 @@ const TopBar = styled.div`
 `;
 
 const Container = styled.div`
-	height: 480px;
+	height: 74vh;
 	width: 36vw;
 	background-color: ${colors.WHITE};
 	overflow-y: scroll;

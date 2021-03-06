@@ -22,7 +22,6 @@ const globalStyles = (
 				color: inherit;
 				text-decoration: none;
 			}
-
 			* {
 				box-sizing: border-box;
 			}
@@ -30,19 +29,45 @@ const globalStyles = (
 	/>
 );
 
-class App extends Component {
-	constructor(props){
+class App extends React.Component {
+	constructor(props) {
 		super(props);
 		this.state = {
-			summary_value: {classification: "unethical", error: "None", summary: "Company will notify Customer before Customer exceeds the Title Request Use Limit indicated on the Order Form. Company will invoice Customer for Overages on written notice (which may be by email). If, after 30 days from the date of that written notice, Company may stop providing the Service to the Customer. ."}
-			// summary_value: {classification: "", error: "", summary: ""}
-			
+			outputState: 0 /* 0 = idle, 1 = calculating, 2 = valid response, 3 = error */,
+			error: '',
+			classification: '',
+			summary: '',
+		};
+		this.updateOutputState = this.updateOutputState.bind(this);
+		this.setCalculating = this.setCalculating.bind(this);
+	}
+
+	updateOutputState(response) {
+		if (response.error == 'None') {
+			this.setState({
+				outputState: 2 /* valid response */,
+				error: '',
+				classification: response.classification,
+				summary: response.summary,
+			});
+		} else {
+			this.setState({
+				outputState: 3 /* error */,
+				error: response.error,
+				classification: '',
+				summary: '',
+			});
 		}
 	}
 
-	updateShared(value) {
-        this.setState({summary_value: value});
-    }
+	setCalculating() {
+		this.setState({
+			outputState: 1 /* calculating */,
+			error: '',
+			classification: '',
+			summary: '',
+		});
+	}
 
 	render() {
 		return (
@@ -58,39 +83,32 @@ class App extends Component {
 				</HeaderBox>
 				<BodyBox>
 					<BodyBoxHalf>
-						<Input summary_value={this.state.summary_value} updateShared={this.updateShared}/>
+						<Input updateOutput={this.updateOutputState} setCalculating={this.setCalculating} />
 					</BodyBoxHalf>
 					<BodyBoxHalf>
-						<Output summary_value={this.state.summary_value}/>
+						<Output updateResponse={this.state} />
 					</BodyBoxHalf>
 				</BodyBox>
 			</Container>
 		);
-
 	}
-	
 }
 
 const HeaderBox = styled('div')`
-	/* border: 1px solid red; */
 	width: 100%;
 	height: 22vh;
 `;
 
 const HeaderTop = styled('div')`
-	/* border: 1px solid red; */
 	height: 15%;
 	width: 100%;
-
 	text-align: left;
 `;
 
 const HeaderBottom = styled('div')`
-	/* border: 1px solid red; */
 	height: 85%;
 	width: 100%;
 	text-align: center;
-
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
@@ -98,17 +116,14 @@ const HeaderBottom = styled('div')`
 
 const Headline = styled('div')`
 	margin: auto;
-	/* border: 1px solid red; */
 	width: 50%;
 	text-align: center;
-
-	font-size: 36px;
+	font-size: 5.5vh;
 	font-weight: 700;
-	line-height: 48px;
+	line-height: 7vh;
 `;
 
 const Logo = styled('img')`
-	/* border: 1px solid red; */
 	width: 6vw;
 	height: auto;
 `;
@@ -125,8 +140,6 @@ const BodyBox = styled('div')`
 	margin-right: auto;
 	width: 100%;
 	min-height: 75vh;
-	/* border: 1px solid red; */
-
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
@@ -135,7 +148,6 @@ const BodyBox = styled('div')`
 const BodyBoxHalf = styled('div')`
 	width: 100%;
 	min-height: 100%;
-	/* border: 1px solid red; */
 	display: flex;
 	flex-direction: row;
 	justify-content: space-around;

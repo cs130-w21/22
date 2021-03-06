@@ -4,23 +4,29 @@
 */
 
 .nav-tabs {
+	height: 7vh;
 	border-bottom: 4px solid #444aca;
+	padding: auto;
+}
+
+.nav-link {
+	margin-top: auto;
+	margin-bottom: auto;
+	display: block;
+	height: 100%;
+	width: 50%;
+	font-size: 2.5vh;
 }
 
 .nav-link.active {
 	color: #ffffff !important;
 	background: linear-gradient(#575fff, #444aca) !important;
-	border-bottom: 11px solid #444aca !important;
+	border-bottom: 20px solid #444aca !important;
 	font-weight: bold;
 }
 
-.nav-link {
-	display: block;
-	width: 50%;
-}
-
 .nav-tabs .nav-link {
-	margin-bottom: -1px;
+	/* margin-bottom: -1px; */
 	border: none !important;
 }
 
@@ -30,22 +36,30 @@
 	font-weight: bold;
 }
 
+.tab-content {
+	height: 100%;
+}
+
+.tab-pane {
+	height: 90%;
+}
+
 .dropzone {
-	max-height: 70%;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
 	text-align: center;
+	max-height: 34vh;
 	width: 80%;
-	margin-left: auto;
-	margin-right: auto;
-	padding-top: 40px;
-	padding-bottom: 40px;
+	margin: auto;
+	padding-top: 5vh;
+	padding-bottom: 5vh;
 	text-align: center;
 	border: 3px dashed #c2c0c0;
 	background-color: #edf5ff;
-	font-size: 18px;
-	line-height: 24px;
+	font-size: 2.5vh;
+	line-height: 3vh;
 	font-style: bold;
 	outline: none;
+	/* border: 1px solid red; */
 }
