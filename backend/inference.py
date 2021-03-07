@@ -15,8 +15,15 @@ from pdfminer.pdfparser import PDFParser
 # Uses pdfminer.six to parse through the pdf. Example can be found at
 # https://pdfminersix.readthedocs.io/en/latest/tutorial/composable.html
 
-# Trims any beginning non-alphabet letters
 def trim(line):
+    """Trims any beginning non-alphabet letters.
+
+    Args:
+      line (str): The line to trim
+
+    Returns:
+      str: The sliced line, starting from the index of the first alphabetical character to the end
+    """
     index = 0
     for i in range(len(line)):
       if line[i].isalpha():
@@ -24,8 +31,16 @@ def trim(line):
       index = index + 1
     return line[index:]
 
-# Processes text to better fit inference's expected value
-def processText(text):
+
+def process_text(text):
+    """Processes text to better fit inference's expected value.
+
+    Args:
+      text (str): a block of text to process to conform to Inference system input
+
+    Returns:
+      str: the processed text
+    """
     text = text.strip()
     textList = text.split('\n')
     newText = ''
@@ -49,14 +64,32 @@ def processText(text):
   
 
 class Inference():
+  """A wrapper class for EULA ethicality and summary inference.
+
+  Attributes:
+    tokenizer (transformers.DistilBertTokenizerFast): A “fast” DistilBert tokenizer
+    model (transformers.DistilBertForSequenceClassification): A DistilBert model
+    summarizer (transformers.SummarizationPipeline): A summarizer pipeline
+
+  """
   def __init__(self):
+    """Initializes a Inference object."""
     # self.model = get_pretrained_model()
     self.tokenizer = get_tokenizer()
     self.model = transformers.Trainer(model=get_pretrained_model())
     self.summarizer = pipeline("summarization") # ~1.2 GB download the first time this is run.
 
-  def getEthicalityClassification(self, e):
-    text = e.getText()  # EULA clauses separated by newlines.
+
+  def get_ethicality_classification(self, e):
+    """Gets an ethicality classification for a given EULA object.
+
+    Args:
+      e (inference.EULA): The EULA object to classify
+
+    Returns:
+      str: either 'ethical' or 'unethical', the predicted value for the current EULA text
+    """
+    text = e.get_text()  # EULA clauses separated by newlines.
     clauses = text.split('\n')
     inference_data = InferenceDataset(clauses, self.tokenizer)
     predictions = self.model.predict(inference_data).predictions
@@ -68,16 +101,33 @@ class Inference():
     else:
       return 'ethical'
 
-  def getEULASummary(self, e):
-    text = e.getText()  # EULA clauses separated by newlines.
+
+  def get_EULA_summary(self, e):
+    """Gets a summary for a given EULA object.
+
+    Args:
+      e (inference.EULA): The EULA object to summarize
+
+    Returns:
+      str: a summary of the EULA text
+    """
+    text = e.get_text()  # EULA clauses separated by newlines.
     summary = self.summarizer(text, min_length=10, max_length=10 + min(140, len(text) // 3))
     return summary[0]['summary_text'].replace(' .', '.').lstrip()
 
 
 class EULA:
+  """A wrapper class for a EULA document.
+
+  Args:
+    text (str): a EULA text input
+    pdf (str): a filepath to a EULA PDF input
+
+  """
   def __init__(self, text, pdf=None):
+    """Initializes a EULA object."""
     if pdf == None and text != None:
-      self.text = processText(text)
+      self.text = process_text(text)
       return
     elif pdf == None and text == None:
       raise Exception('EULA initialization failed')
@@ -94,7 +144,14 @@ class EULA:
         interpreter.process_page(page)
     readFile.close()
 
-    self.text = processText(output_string.getvalue())
+    self.text = process_text(output_string.getvalue())
 
-  def getText(self):
+
+  def get_text(self):
+    """Gets relevant EULA text, up to a maximum of 500 characters.
+    
+    Returns:
+      str: the EULA text
+
+    """
     return self.text[:500]

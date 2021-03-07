@@ -8,6 +8,14 @@ from cfg import config
 
 
 class EULADataset(Dataset):
+  """A wrapper class for a EULA Dataset. Contains clauses and target labels.
+
+  Args:
+    text (str): the EULA text
+    labels (list): a list of targets labels for each clause in the EULA text
+    tokenizer (transformers.DistilBertTokenizerFast): A “fast” DistilBert tokenizer
+
+  """
   def __init__(self, text, labels, tokenizer):
     self.encodings = tokenizer(text, truncation=True, padding=True)
     self.labels = labels
@@ -20,7 +28,15 @@ class EULADataset(Dataset):
   def __len__(self):
     return len(self.labels)
 
+
 class InferenceDataset(Dataset):
+  """A wrapper class for an Inference Dataset. Contains only clauses.
+
+  Args:
+    text (str): the EULA text
+    tokenizer (transformers.DistilBertTokenizerFast): A “fast” DistilBert tokenizer
+
+  """
   def __init__(self, text, tokenizer):
     self.encodings = tokenizer(text, truncation=True, padding=True)
 
@@ -33,9 +49,21 @@ class InferenceDataset(Dataset):
 
 
 def get_tokenizer():
+  """Gets a DistilBert "fast" tokenizer.
+
+  Returns:
+    transformers.DistilBertTokenizerFast: A DistilBert "fast" tokenizer
+  """
   return transformers.DistilBertTokenizerFast.from_pretrained(config['model_checkpoint'])
 
+
 def get_train_val_test_datasets():
+  """Gets training, validation, and testing datasets for finetuning the BERT model.
+
+  Returns:
+    (data.EULADataset, data.EULADataset, data.EULADataset): a tuple containing the train set, validation set, and test set.
+    
+  """
   # Read EULA training data.
   df = pd.read_csv("data/AI_ML_Challenge_Training_Data_Set_1_v1.csv")
 

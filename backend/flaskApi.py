@@ -11,6 +11,12 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/pdf', methods=['POST'])
 def analyzePdf():
+    """Handler to analyze (classify and summarize) a EULA PDF input.
+    
+    Returns:
+        flask.Response: a JSON response containing classification, summarization, and error information
+
+    """
     # Check if file exist
     if 'file' not in request.files:
         return jsonify({'classification':'None', 'summary':'None', 'error':'Files not included in Request.'})
@@ -36,8 +42,8 @@ def analyzePdf():
     # Create EULA class and run inference
     eula = inference.EULA(None, path)
     infer = inference.Inference()
-    classification = infer.getEthicalityClassification(eula)
-    summary = infer.getEULASummary(eula)
+    classification = infer.get_ethicality_classification(eula)
+    summary = infer.get_EULA_summary(eula)
     
     # Delete file
     os.remove(UPLOAD_FOLDER + '/' + filename)
@@ -48,6 +54,12 @@ def analyzePdf():
 
 @app.route('/text', methods=['POST'])
 def analyzeText():
+    """Handler to analyze (classify and summarize) a EULA text input.
+    
+    Returns:
+        flask.Response: a JSON response containing classification, summarization, and error information
+
+    """
     request_data = request.get_json()
     print(request_data)
 
@@ -64,17 +76,19 @@ def analyzeText():
     # Create EULA class and run inference
     eula = inference.EULA(text, None)
     infer = inference.Inference()
-    classification = infer.getEthicalityClassification(eula)
-    summary = infer.getEULASummary(eula)
+    classification = infer.get_ethicality_classification(eula)
+    summary = infer.get_EULA_summary(eula)
 
     # Format return message    
     return jsonify({'classification':classification, 'summary':summary, 'error':'None'})
+
 
 @app.route('/text_dummy', methods=['POST'])
 def analyzeTextDummy():
 	# For testing frontend
 	time.sleep(3)
 	return jsonify({'classification':'ethical', 'summary':'Dummy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text.', 'error':'None'})
+
 
 if __name__ == '__main__':
     app.run()

@@ -7,7 +7,8 @@ from models import get_model
 from utils import metrics
 
 
-if __name__ == '__main__':
+def train():
+	"""Trains a BERT ethicality classifer."""
 
 	args = transformers.TrainingArguments(
 		"saved_models",
@@ -32,3 +33,9 @@ if __name__ == '__main__':
 
 	# Test dataset metrics.
 	trainer.predict(test).metrics
+
+
+if __name__ == '__main__':
+	train()
+
+	
