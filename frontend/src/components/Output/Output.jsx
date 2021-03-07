@@ -22,7 +22,13 @@ class Output extends Component {
 			<Container>
 				<TopBar />
 				<BelowTopBar>
-					{this.state.outputState == 0 && <div>not ready</div>}
+					{this.state.outputState == 0 && (
+						<>
+							<IdleContainer>
+								<IdleImage Image src="idle.png" />
+							</IdleContainer>
+						</>
+					)}
 					{this.state.outputState == 1 && (
 						<>
 							{/* TODO (Ruban): Calculating screen */}
@@ -44,7 +50,13 @@ class Output extends Component {
 					)}
 					{this.state.outputState == 3 && (
 						<>
-							<div>{this.state.error}</div>
+							<ErrorContainer>
+								<ErrorContainerInner>
+									<ErrorImage Image src="error.png" />
+									<Oops>Oops!</Oops>
+									<ErrorMessage>{this.state.error}</ErrorMessage>
+								</ErrorContainerInner>
+							</ErrorContainer>
 						</>
 					)}
 				</BelowTopBar>
@@ -53,7 +65,20 @@ class Output extends Component {
 	}
 }
 
-////////////////////// TODO (Stephanie): Not ready ///////////////////////
+////////////////////// Idle ///////////////////////
+
+const IdleContainer = styled.div`
+	height: 100%;
+	width: 100%;
+	text-align: center;
+`;
+
+const IdleImage = styled.img`
+	height: 68vh;
+	width: auto;
+	margin-left: auto;
+	margin-right: auto;
+`;
 
 ////////////////////// TODO (Ruban): Calculating ///////////////////////
 
@@ -69,7 +94,6 @@ const YourEulaAnalysis = styled.div`
 `;
 
 const EulaAnalysisTop = styled.div`
-	height: 100%;
 	width: 98%;
 	display: flex;
 	flex-direction: row;
@@ -115,19 +139,65 @@ const SummaryText = styled.div`
 	margin-left: 2vw;
 `;
 
-////////////////////// TODO (Stephanie): Error ///////////////////////
+////////////////////// Error ///////////////////////
+
+const ErrorContainer = styled.div`
+	height: 100%;
+	width: 100%;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+`;
+
+const ErrorContainerInner = styled.div`
+	height: 80%;
+	width: 100%;
+	text-align: center;
+`;
+
+const ErrorImage = styled.img`
+	height: 36vh;
+	width: auto;
+	margin-left: auto;
+	margin-right: auto;
+`;
+
+const Oops = styled.div`
+	height: auto;
+	width: 100%;
+	text-align: center;
+	margin-top: 5vh;
+
+	font-size: 3.8vh;
+	text-transform: uppercase;
+	color: ${colors.RED};
+	font-weight: bold;
+	letter-spacing: 0.2vw;
+`;
+
+const ErrorMessage = styled.div`
+	font-size: 2.6vh;
+	line-height: 3.4vh;
+	margin-top: 1vh;
+	letter-spacing: 0.05vw;
+`;
 
 ////////////////////// General ///////////////////////
 
 const BelowTopBar = styled.div`
 	margin-left: auto;
 	margin-right: auto;
+	margin-top: 2vh;
+	margin-bottom: 2vh;
 	width: 96%;
-	padding: 16px 28px;
+	padding: 0px 28px;
+	height: 69vh;
+	overflow-y: scroll;
 `;
 
 const TopBar = styled.div`
-	height: 6px;
+	height: 1vh;
 	width: 100%;
 	background-color: ${colors.DARK_PURPLE};
 `;
@@ -136,7 +206,6 @@ const Container = styled.div`
 	height: 74vh;
 	width: 36vw;
 	background-color: ${colors.WHITE};
-	overflow-y: scroll;
 `;
 
 export default Output;

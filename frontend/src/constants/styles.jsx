@@ -12,5 +12,6 @@ export const colors = {
 	GRAY: '#999999',
 	GREEN: '#9EBEAF',
 	YELLOW: '#FFCBA1',
-	RED: '#ffc4bb',
+	LIGHT_RED: '#ffc4bb',
+	RED: '#f57a66',
 };
