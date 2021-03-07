@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: App.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: App.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, {Component} from 'react';
+import styled from '@emotion/styled';
+import {css, Global} from '@emotion/react';
+
+import {colors} from './constants/styles';
+
+import Input from './components/Input/Input';
+import Output from './components/Output/Output';
+
+const globalStyles = (
+	&lt;Global
+		styles={css`
+			html,
+			body {
+				padding: 0;
+				margin: 0;
+				font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans,
+					Droid Sans, Helvetica Neue, sans-serif;
+				letter-spacing: 0.5px;
+			}
+			a {
+				color: inherit;
+				text-decoration: none;
+			}
+			* {
+				box-sizing: border-box;
+			}
+		`}
+	/>
+);
+
+/**
+ * Class App component.
+ * @class
+ */
+class App extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			outputState: 0 /* 0 = idle, 1 = calculating, 2 = valid response, 3 = error */,
+			error: '',
+			classification: '',
+			summary: '',
+		};
+		this.updateOutputState = this.updateOutputState.bind(this);
+		this.setCalculating = this.setCalculating.bind(this);
+	}
+
+	/**
+	* Function that takes Flask response and deterines how to set next state to: valid or error
+	* @function updateOutputState
+	* @param {object} response
+	*/
+	updateOutputState(response) {
+		if (response.error == 'None') {
+			this.setState({
+				outputState: 2 /* valid response */,
+				error: '',
+				classification: response.classification,
+				summary: response.summary,
+			});
+		} else {
+			this.setState({
+				outputState: 3 /* error */,
+				error: response.error,
+				classification: '',
+				summary: '',
+			});
+		}
+	}
+	/**
+	* Function that sets state to default idle state
+	* @function setCalculating
+	*/
+	setCalculating() {
+		this.setState({
+			outputState: 0 /* calculating */,
+			error: '',
+			classification: '',
+			summary: '',
+		});
+	}
+	/**
+	* Function that sets state to default idle state
+	* @function render
+	* @return {JSX.Element} - returns a screen that contains both the input and output components
+	* the user interacts with the input component to affect the output component
+	*/
+	render() {
+		return (
+			&lt;Container>
+				{globalStyles}
+				&lt;HeaderBox>
+					&lt;HeaderTop>
+						&lt;Logo src="logo.png" />
+					&lt;/HeaderTop>
+					&lt;HeaderBottom>
+						&lt;Headline>How ethical is your end user license agreement?&lt;/Headline>
+					&lt;/HeaderBottom>
+				&lt;/HeaderBox>
+				&lt;BodyBox>
+					&lt;BodyBoxHalf>
+						&lt;Input updateOutput={this.updateOutputState} setCalculating={this.setCalculating} />
+					&lt;/BodyBoxHalf>
+					&lt;BodyBoxHalf>
+						&lt;Output updateResponse={this.state} />
+					&lt;/BodyBoxHalf>
+				&lt;/BodyBox>
+			&lt;/Container>
+		);
+	}
+}
+
+const HeaderBox = styled('div')`
+	width: 100%;
+	height: 22vh;
+`;
+
+const HeaderTop = styled('div')`
+	height: 15%;
+	width: 100%;
+	text-align: left;
+`;
+
+const HeaderBottom = styled('div')`
+	height: 85%;
+	width: 100%;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+`;
+
+const Headline = styled('div')`
+	margin: auto;
+	width: 50%;
+	text-align: center;
+	font-size: 5.5vh;
+	font-weight: 700;
+	line-height: 7vh;
+`;
+
+const Logo = styled('img')`
+	width: 6vw;
+	height: auto;
+`;
+
+const Container = styled('div')`
+	text-align: center;
+	background: linear-gradient(white, #dcdeff);
+	padding: 3vh 5vw 8vh 5vw;
+	height: 100%;
+`;
+
+const BodyBox = styled('div')`
+	margin-left: auto;
+	margin-right: auto;
+	width: 100%;
+	min-height: 75vh;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+`;
+
+const BodyBoxHalf = styled('div')`
+	width: 100%;
+	min-height: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	padding-top: 5vh;
+	padding-bottom: 5vh;
+`;
+
+export default App;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="App.html">App</a></li></ul><h3>Global</h3><ul><li><a href="global.html#render">render</a></li><li><a href="global.html#setCalculating">setCalculating</a></li><li><a href="global.html#updateOutputState">updateOutputState</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Sun Mar 07 2021 15:50:01 GMT-0800 (Pacific Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

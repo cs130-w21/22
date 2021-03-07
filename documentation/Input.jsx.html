@@ -1,4 +1,32 @@
-import React, {Component, useState} from 'react';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: Input.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: Input.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, {Component, useState} from 'react';
 import styled from '@emotion/styled';
 import {Tabs, Tab, Tooltip} from 'react-bootstrap';
 import Dropzone from 'react-dropzone';
@@ -79,7 +107,7 @@ class Input extends Component {
 					);
 			}
 		} else {
-			if (this.state.isFileSelected && this.state.file !== null) {
+			if (this.state.isFileSelected &amp;&amp; this.state.file !== null) {
 				const formData = new FormData();
 				formData.append('file', this.state.file, this.state.file.name);
 				this.props.setCalculating();
@@ -132,7 +160,7 @@ class Input extends Component {
 
 			console.log('FILE:', this.state.file);
 		}
-		if (rejectedFiles && rejectedFiles.length) {
+		if (rejectedFiles &amp;&amp; rejectedFiles.length) {
 			rejectedFiles.map((file) => {
 				// TODO: Handle input error
 				console.log('ERROR', file.errors);
@@ -159,56 +187,56 @@ class Input extends Component {
 	*/
 	render() {
 		return (
-			<div>
-				<Container>
-					<Tabs defaultActiveKey={input.TEXT} onSelect={this.setInputType}>
-						<Tab eventKey={input.TEXT} title="TEXT INPUT">
-							<TextInput placeholder="Paste your agreement" onChange={this.updateText} value={this.state.text} />
-						</Tab>
-						<Tab eventKey={input.FILE} title="UPLOAD PDF">
-							<UploadContainer>
-								<UploadContainerInner>
-									<Dropzone onDrop={this.handleDrop} multiple="false" accept="application/pdf">
+			&lt;div>
+				&lt;Container>
+					&lt;Tabs defaultActiveKey={input.TEXT} onSelect={this.setInputType}>
+						&lt;Tab eventKey={input.TEXT} title="TEXT INPUT">
+							&lt;TextInput placeholder="Paste your agreement" onChange={this.updateText} value={this.state.text} />
+						&lt;/Tab>
+						&lt;Tab eventKey={input.FILE} title="UPLOAD PDF">
+							&lt;UploadContainer>
+								&lt;UploadContainerInner>
+									&lt;Dropzone onDrop={this.handleDrop} multiple="false" accept="application/pdf">
 										{({getRootProps, getInputProps}) => (
-											<div {...getRootProps({className: 'dropzone'})}>
-												<input {...getInputProps()} />
-												<FileImage src="files.png" />
-												<DragAndDropText>Drag and drop your file here</DragAndDropText>
-												<OrText>or</OrText>
-												<BrowseComputerText>Browse your computer</BrowseComputerText>
-											</div>
+											&lt;div {...getRootProps({className: 'dropzone'})}>
+												&lt;input {...getInputProps()} />
+												&lt;FileImage src="files.png" />
+												&lt;DragAndDropText>Drag and drop your file here&lt;/DragAndDropText>
+												&lt;OrText>or&lt;/OrText>
+												&lt;BrowseComputerText>Browse your computer&lt;/BrowseComputerText>
+											&lt;/div>
 										)}
-									</Dropzone>
+									&lt;/Dropzone>
 
-									{this.state.file && (
-										<UploadedFileBox>
-											<UploadedFileBoxLeft>
-												<PDFImage src="pdf.png" />
-											</UploadedFileBoxLeft>
-											<UploadedFileBoxRight>
-												<UploadedFileBoxRightTop>
-													<FileName>{this.state.file.name}</FileName>
-													<FileSize>{this.bytesToSize(this.state.file.size)}</FileSize>
-												</UploadedFileBoxRightTop>
-												<Uploading>Ready to upload</Uploading>
-											</UploadedFileBoxRight>
-										</UploadedFileBox>
+									{this.state.file &amp;&amp; (
+										&lt;UploadedFileBox>
+											&lt;UploadedFileBoxLeft>
+												&lt;PDFImage src="pdf.png" />
+											&lt;/UploadedFileBoxLeft>
+											&lt;UploadedFileBoxRight>
+												&lt;UploadedFileBoxRightTop>
+													&lt;FileName>{this.state.file.name}&lt;/FileName>
+													&lt;FileSize>{this.bytesToSize(this.state.file.size)}&lt;/FileSize>
+												&lt;/UploadedFileBoxRightTop>
+												&lt;Uploading>Ready to upload&lt;/Uploading>
+											&lt;/UploadedFileBoxRight>
+										&lt;/UploadedFileBox>
 									)}
-								</UploadContainerInner>
-							</UploadContainer>
-						</Tab>
-					</Tabs>
-				</Container>
-				<CalculateButton
+								&lt;/UploadContainerInner>
+							&lt;/UploadContainer>
+						&lt;/Tab>
+					&lt;/Tabs>
+				&lt;/Container>
+				&lt;CalculateButton
 					onClick={this.sendInput}
 					disabled={
-						(this.state.inputType == input.TEXT && this.state.text.length === 0) ||
-						(this.state.inputType == input.FILE && this.state.isFileSelected === null)
+						(this.state.inputType == input.TEXT &amp;&amp; this.state.text.length === 0) ||
+						(this.state.inputType == input.FILE &amp;&amp; this.state.isFileSelected === null)
 					}
 				>
 					Calculate
-				</CalculateButton>
-			</div>
+				&lt;/CalculateButton>
+			&lt;/div>
 		);
 	}
 }
@@ -322,11 +350,11 @@ const CalculateButton = styled.button`
 	opacity: 1;
 	transition: 0.3s;
 	letter-spacing: 1px !important;
-	&:disabled {
+	&amp;:disabled {
 		background: ${colors.DARK_PURPLE};
 		opacity: 0.8;
 	}
-	&:hover:enabled {
+	&amp;:hover:enabled {
 		opacity: 0.9;
 	}
 `;
@@ -338,9 +366,32 @@ const TextInput = styled('textarea')`
 	font-size: 2.5vh;
 	padding: 5px 10px;
 	border: none !important;
-	&:focus {
+	&amp;:focus {
 		outline: none !important;
 	}
 `;
 
 export default Input;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Input.html">Input</a></li></ul><h3>Global</h3><ul><li><a href="global.html#bytesToSize">bytesToSize</a></li><li><a href="global.html#handleDrop">handleDrop</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#sendInput">sendInput</a></li><li><a href="global.html#setInputType">setInputType</a></li><li><a href="global.html#updateText">updateText</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Sun Mar 07 2021 15:53:29 GMT-0800 (Pacific Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
