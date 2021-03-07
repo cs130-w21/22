@@ -17,6 +17,7 @@ class Input extends Component {
 		this.state = {
 			text: '',
 			file: null,
+			fileSize: null,
 			isFileSelected: false,
 			inputType: input.TEXT,
 		};
@@ -58,9 +59,9 @@ class Input extends Component {
 			}
 		} else {
 			if (this.state.isFileSelected && this.state.file !== null) {
-				alert('Sending file!');
 				const formData = new FormData();
 				formData.append('file', this.state.file, this.state.file.name);
+				this.props.setCalculating();
 				axios
 					.post('/pdf', formData, {
 						headers: {
@@ -72,9 +73,11 @@ class Input extends Component {
 					.then(
 						(response) => {
 							console.log(response.data);
+							this.props.updateOutput(response.data);
 						},
 						(error) => {
 							console.log(error);
+							this.props.updateOutput(error);
 						}
 					);
 			}
@@ -93,6 +96,8 @@ class Input extends Component {
 			}
 			this.setState({file: acceptedFiles[0]});
 			this.setState({isFileSelected: true});
+
+			console.log('FILE:', this.state.file);
 		}
 		if (rejectedFiles && rejectedFiles.length) {
 			rejectedFiles.map((file) => {
@@ -100,6 +105,13 @@ class Input extends Component {
 				console.log('ERROR', file.errors);
 			});
 		}
+	};
+
+	bytesToSize = (bytes) => {
+		let sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+		if (bytes == 0) return '0 Byte';
+		let i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+		return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
 	};
 
 	render() {
@@ -133,10 +145,9 @@ class Input extends Component {
 											<UploadedFileBoxRight>
 												<UploadedFileBoxRightTop>
 													<FileName>{this.state.file.name}</FileName>
-													<Percentage>0%</Percentage>
+													<FileSize>{this.bytesToSize(this.state.file.size)}</FileSize>
 												</UploadedFileBoxRightTop>
-												<Uploading>UPLOADING</Uploading>
-												<UploadBar />
+												<Uploading>Ready to upload</Uploading>
 											</UploadedFileBoxRight>
 										</UploadedFileBox>
 									)}
@@ -174,36 +185,33 @@ const UploadedFileBoxRight = styled.div`
 `;
 
 const Uploading = styled.div`
-	font-size: 1.5vh;
-	letter-spacing: 0.3vh;
+	font-size: 1.8vh;
+	letter-spacing: 0.2vh;
 	line-height: 2vh;
 	color: ${colors.GRAY};
 	text-align: left;
-`;
-
-const UploadBar = styled.div`
-	width: 100%;
-	height: 0.75vh;
-	background-color: ${colors.LIGHTER_GRAY};
+	text-transform: uppercase;
 `;
 
 const FileName = styled.div`
+	font-size: 3vh;
 	color: ${colors.CHARCOAL};
 `;
 
-const Percentage = styled.div`
+const FileSize = styled.div`
+	font-size: 3vh;
 	color: ${colors.GRAY};
 `;
 
 const UploadedFileBox = styled.div`
-	height: 7vh;
+	height: 6.5vh;
 	width: 80%;
 	margin-left: auto;
 	margin-right: auto;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-	margin-top: 3vh;
+	margin-top: 4vh;
 	font-size: 2.5vh;
 	line-height: 3vh;
 `;
