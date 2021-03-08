@@ -11,7 +11,7 @@ jobs:
       python:
         - 3.8
       install:
-        - pip3 install -r requirements.txt
+        - pip3 install -r backend/requirements.txt
       script:
         - python -c "print('Hi from Python!')"
         - cd backend
@@ -27,8 +27,8 @@ jobs:
       script:
         - node -e "console.log('Hi from NodeJS!')"
         - cd frontend/src
-        - node setupTests.jsx
-        - node App.test.jsx
+        - jsx --run setupTests.jsx
+        - jsx --run App.test.jsx
       
       # Integration Test 
     - stage: "Even More Testing"
