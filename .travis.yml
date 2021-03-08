@@ -1,5 +1,4 @@
-# Install Dependencies
-install:
+# YAML configuration file for TravisCI automatic CI/CD
 
 # Testing -> More Testing -> Deployment 
 jobs:
@@ -8,12 +7,16 @@ jobs:
     - stage: "Testing"
       if: True
       name: "Backend Tests (Python)"
+      language: python
+      python:
+        - 3.8
+      install:
+        - pip3 install -r requirements.txt
       script:
-      - python -c "print('Hi from Python!')"
-      - cd backend
-      - pip3 install -r requirements.txt
-      - python -m py_compile *.py
-      - python inference_tests.py
+        - python -c "print('Hi from Python!')"
+        - cd backend
+        - python -m py_compile *.py
+        - python inference_tests.py
 
       # Frontend 
     - stage: "Testing"
@@ -22,18 +25,18 @@ jobs:
       language: node_js
       node_js: 12
       script:
-      - node -e "console.log('Hi from NodeJS!')"
-      - cd frontend/src
-      - node setupTests.jsx
-      - node App.test.jsx
+        - node -e "console.log('Hi from NodeJS!')"
+        - cd frontend/src
+        - node setupTests.jsx
+        - node App.test.jsx
       
       # Integration Test 
     - stage: "Even More Testing"
       if: True
       name: "Other Tests"
       script:
-      - cd backend
-      - pytest api-tests.py
+        - cd backend
+        - pytest api-tests.py
       
       # deployment to AWS (not implemented), build is done locally
     - stage: "Deploying"
