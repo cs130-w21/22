@@ -6,7 +6,7 @@ class Output extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			outputState: 1 /* 0 = idle, 1 = calculating, 2 = valid response, 3 = error */,
+			outputState: 0 /* 0 = idle, 1 = calculating, 2 = valid response, 3 = error */,
 			error: '',
 			classification: '',
 			summary: '',
@@ -33,11 +33,19 @@ class Output extends Component {
 						<>
 							{/* TODO (Ruban): Calculating screen */}
 							<YourEulaAnalysis>Calculating</YourEulaAnalysis>
-							<CalcHeaderWrapper> 
-								<CalcHeader>Hold On tight for<br></br>your result</CalcHeader>
+							<CalculatingContainer>
+								<CalculatingBackground src="calculating_background.png" />
+								<Circle />
+								<CalcImage src="calculating.png" />
+							</CalculatingContainer>
+
+							{/* <CalcHeaderWrapper>
+								<CalcHeader>
+									Hold On tight for<br></br>your result
+								</CalcHeader>
 								<BigBar></BigBar>
 							</CalcHeaderWrapper>
-							<CalcTextContainer> 
+							<CalcTextContainer>
 								<CalcHeaderSummary>Summary</CalcHeaderSummary>
 								<CalcBarGroup>
 									<CalcGreyBar width="50vh">.</CalcGreyBar>
@@ -58,12 +66,8 @@ class Output extends Component {
 									<CalcGreyBar width="50vh">.</CalcGreyBar>
 									<CalcGreyBar width="37vh">.</CalcGreyBar>
 								</CalcBarGroup>
-							</CalcTextContainer>
-								
-							<CalcContainer>
-								<CalcImage Image src="calculating.png" />
-							</CalcContainer>
-							
+							</CalcTextContainer> */}
+							{/* <CalcContainer></CalcContainer> */}
 						</>
 					)}
 					{this.state.outputState == 2 && (
@@ -109,10 +113,72 @@ const IdleImage = styled.img`
 	width: auto;
 	margin-left: auto;
 	margin-right: auto;
-	z-index=-1;
 `;
 
 ////////////////////// TODO (Ruban): Calculating ///////////////////////
+
+const CalculatingContainer = styled.div`
+	height: 100%;
+	width: 100%;
+	position: relative;
+	top: 0;
+	left: 0;
+`;
+
+const CalculatingBackground = styled.img`
+	height: auto;
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 2vh;
+
+	position: relative;
+	top: 0;
+	left: 0;
+	/* border: 1px blue solid; */
+`;
+
+const Circle = styled.div`
+	height: 50vh;
+	width: 50vh;
+	position: absolute;
+	top: 2vh;
+	left: 3.5vw;
+	z-index: 2;
+
+	border: 3vh solid ${colors.DARK_PURPLE};
+	border-image-slice: 1;
+	border-image-source: linear-gradient(to left, #743ad5, #d53a9d);
+
+	--angle: 0deg;
+	border-image: linear-gradient(var(--angle), ${colors.DARK_PURPLE}, rgba(255, 255, 255, 0)) 1;
+	animation: 5s rotate linear infinite;
+
+	box-sizing: border-box;
+	border-radius: 50% !important;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+
+	@keyframes rotate {
+		to {
+			--angle: 360deg;
+		}
+	}
+	@property --angle {
+		syntax: '<angle>';
+		initial-value: 0deg;
+		inherits: false;
+	}
+`;
+
+const CalcImage = styled.img`
+	height: 55vh;
+	position: absolute;
+	top: 9vh;
+	left: 10vw;
+	z-index: 4;
+	/* border: 1px green solid; */
+`;
 
 const CalcContainer = styled.div`
 	height: 100%;
@@ -120,20 +186,13 @@ const CalcContainer = styled.div`
 	text-align: center;
 	position: relative;
 	overflow: hidden;
-`;
-
-const CalcImage = styled.img`
-	height: 55vh;
-	margin-left: auto;
-	margin-right: auto;
-	left: 40px;
-	position: absolute;
+	/* border: 1px solid red; */
 `;
 
 const CalcHeaderWrapper = styled.div`
 	display: grid;
-    grid-template-columns: 1fr 1fr;
-
+	grid-template-columns: 1fr 1fr;
+	/* border: solid 1px red; */
 `;
 
 const BigBar = styled.div`
@@ -169,7 +228,8 @@ const CalcHeaderSummary = styled.div`
 
 const CalcTextContainer = styled.div`
 	position: absolute;
-	overflow:hidden;
+	overflow: hidden;
+	border: solid 1px red;
 `;
 
 const CalcGreyBar = styled.div`
@@ -185,7 +245,6 @@ const CalcBarGroup = styled.div`
 	padding-left: 20px;
 	padding-right: 20px;
 `;
-	
 
 /* Rectangle 497 */
 
@@ -196,7 +255,6 @@ const CalcBarGroup = styled.div`
 // top: 555px;
 
 // background: #D1D0D0;
-
 
 ////////////////////// Valid response ///////////////////////
 
@@ -210,11 +268,12 @@ const YourEulaAnalysis = styled.div`
 `;
 
 const EulaAnalysisTop = styled.div`
-	width: 98%;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
 	margin-top: 3vh;
+	margin-left: 2vw;
+	margin-right: 2vw;
 `;
 
 const EthicalityBar = styled.div`
@@ -245,6 +304,8 @@ const Header = styled.div`
 
 const EulaAnalysisBottom = styled.div`
 	margin-top: 3vh;
+	margin-left: 2vw;
+	margin-right: 2vw;
 `;
 
 const SummaryText = styled.div`
@@ -297,17 +358,19 @@ const ErrorMessage = styled.div`
 	line-height: 3.4vh;
 	margin-top: 1vh;
 	letter-spacing: 0.05vw;
+	margin-left: 2vw;
+	margin-right: 2vw;
 `;
 
 ////////////////////// General ///////////////////////
 
 let setOverflow = (value) => {
-	if(value === 1) {
-		return "none"
+	if (value === 1) {
+		return 'none';
 	} else {
-		return "scroll"
+		return 'scroll';
 	}
-}
+};
 
 const BelowTopBar = styled.div`
 	margin-left: auto;
@@ -315,7 +378,7 @@ const BelowTopBar = styled.div`
 	margin-top: 2vh;
 	margin-bottom: 2vh;
 	width: 96%;
-	padding: 0px 28px;
+	/* padding: 0px 28px; */
 	height: 69vh;
 	overflow-y: ${(props) => setOverflow(props.state)};
 `;
@@ -328,11 +391,11 @@ const TopBar = styled.div`
 
 let setColor = (value) => {
 	if (value === 1) {
-		return colors.LIGHTEST_GRAY
+		return colors.LIGHTEST_GRAY;
 	} else {
-		return colors.WHITE
+		return colors.WHITE;
 	}
-}
+};
 
 const Container = styled.div`
 	height: 74vh;
