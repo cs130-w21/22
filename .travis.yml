@@ -4,7 +4,7 @@ install:
 # Testing -> More Testing -> Deployment 
 jobs:
   include:
-      # TODO: backend testing
+      # Backend
     - stage: "Testing"
       if: True
       name: "Backend Tests (Python)"
@@ -12,29 +12,29 @@ jobs:
       - python -c "print('Hi from Python!')"
       - cd backend
       - python -m py_compile *.py
-      - python -c "print('Backend syntax correct')"
-     #- python ./test.py 
+      - python inference_tests.py
 
-      # TODO: frontend testing
+      # Frontend 
     - stage: "Testing"
-      if: False
+      if: True
       name: "Frontend Tests (JS)"
       language: node_js
       node_js: 12
       script:
       - node -e "console.log('Hi from NodeJS!')"
       - cd frontend
+      - yarn install
       - yarn test
       
-      # TODO: ???
+      # Integration Test 
     - stage: "Even More Testing"
-      if: False
+      if: True
       name: "Other Tests"
       script:
-      - echo "Running More Tests"
+      - cd backend
+      - pytest api-tests.py
       
-      # does not deploy because condition is false
-      # TODO: Setup AWS
+      # deployment to AWS (not implemented), build is done locally
     - stage: "Deploying"
       if: False
       script: skip
