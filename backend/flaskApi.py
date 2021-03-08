@@ -83,12 +83,5 @@ def analyzeText():
     return jsonify({'classification':classification, 'summary':summary, 'error':'None'})
 
 
-@app.route('/text_dummy', methods=['POST'])
-def analyzeTextDummy():
-	# For testing frontend
-	time.sleep(3)
-	return jsonify({'classification':'ethical', 'summary':'Dummy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text. dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text dummmy text.', 'error':'None'})
-
-
 if __name__ == '__main__':
     app.run()

@@ -22,7 +22,7 @@ class Output extends Component {
 		super(props);
 		this.state = {
 			outputState: 0 /* 0 = idle, 1 = calculating, 2 = valid response, 3 = error */,
-			error: '',
+			error: 'Looks like something went wrong. Please try again with new EULA input.',
 			classification: '',
 			summary: '',
 		};
@@ -44,7 +44,7 @@ class Output extends Component {
 	render() {
 		return (
 			<Container state={this.state.outputState}>
-				<TopBar />
+				<TopBar state={this.state.outputState} />
 				<BelowTopBar state={this.state.outputState}>
 					{this.state.outputState == 0 && (
 						<>
@@ -72,7 +72,6 @@ class Output extends Component {
 	}
 }
 
-////////////////////// General ///////////////////////
 /**
  * Sets overflow rule
  * @function setOverflow
@@ -97,11 +96,26 @@ const BelowTopBar = styled.div`
 	overflow-y: ${(props) => setOverflow(props.state)};
 `;
 
+/**
+ * Sets background color
+ * @function setColor
+ * @param {int} value - current output state
+ * @return {string} - background color
+ */
+let setTopBarColor = (value) => {
+	if (value === 3) {
+		return colors.RED;
+	} else {
+		return colors.DARK_PURPLE;
+	}
+};
+
 const TopBar = styled.div`
 	height: 1vh;
 	width: 100%;
-	background-color: ${colors.DARK_PURPLE};
+	background-color: ${(props) => setTopBarColor(props.state)};
 `;
+
 /**
  * Sets background color
  * @function setColor
