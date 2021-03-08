@@ -13,7 +13,7 @@ import {colors} from '../../constants/styles';
  */
 
 const ValidScreen = (props) => {
-	return(
+	return (
 		<>
 			<YourEulaAnalysis>Your EULA Analysis</YourEulaAnalysis>
 			<EulaAnalysisTop>
@@ -25,9 +25,8 @@ const ValidScreen = (props) => {
 				<SummaryText>{props.summary}</SummaryText>
 			</EulaAnalysisBottom>
 		</>
-	)
-}
-
+	);
+};
 
 const YourEulaAnalysis = styled.div`
 	width: 100%;
@@ -39,11 +38,12 @@ const YourEulaAnalysis = styled.div`
 `;
 
 const EulaAnalysisTop = styled.div`
-	width: 98%;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
 	margin-top: 3vh;
+	margin-left: 2vw;
+	margin-right: 2vw;
 `;
 
 const EthicalityBar = styled.div`
@@ -74,6 +74,8 @@ const Header = styled.div`
 
 const EulaAnalysisBottom = styled.div`
 	margin-top: 3vh;
+	margin-left: 2vw;
+	margin-right: 2vw;
 `;
 
 const SummaryText = styled.div`

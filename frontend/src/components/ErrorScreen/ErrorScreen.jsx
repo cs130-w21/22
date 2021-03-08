@@ -13,7 +13,7 @@ import {colors} from '../../constants/styles';
  */
 
 const ErrorScreen = (props) => {
-	return(
+	return (
 		<ErrorContainer>
 			<ErrorContainerInner>
 				<ErrorImage Image src="error.png" />
@@ -21,8 +21,8 @@ const ErrorScreen = (props) => {
 				<ErrorMessage>{props.error}</ErrorMessage>
 			</ErrorContainerInner>
 		</ErrorContainer>
-	)
-}
+	);
+};
 
 const ErrorContainer = styled.div`
 	height: 100%;
@@ -64,6 +64,8 @@ const ErrorMessage = styled.div`
 	line-height: 3.4vh;
 	margin-top: 1vh;
 	letter-spacing: 0.05vw;
+	margin-left: 2vw;
+	margin-right: 2vw;
 `;
 
 export default ErrorScreen;

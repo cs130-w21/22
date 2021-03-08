@@ -20,7 +20,7 @@ class Input extends Component {
 	 * Constructor which intializes component's state
 	 * Current state includes text, file, fileSize, isFileSelected, and inputType values
 	 * @constructor
-	 * @param {object} props - updateOutput and setCalculating function: to manipulate and 
+	 * @param {object} props - updateOutput and setCalculating function: to manipulate and
 	 * set EULA claffication and state values in other components
 	 */
 	constructor(props) {
@@ -117,7 +117,7 @@ class Input extends Component {
 	/**
 	 * Only sends a single accepted file, and logs rejected files
 	 * @function handleDrop
-	 * @param {file[]} acceptedFiles} - list of accepted files 
+	 * @param {file[]} acceptedFiles} - list of accepted files
 	 * @param {file[]} rejectedFiles} - list of rejected files
 	 * @return {void}
 	 */
@@ -153,10 +153,10 @@ class Input extends Component {
 		return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
 	};
 	/**
-	* Function to render componnent to screen
-	* @function render
-	* @return {JSX.Element} returns either the text box or file drop input screens
-	*/
+	 * Function to render componnent to screen
+	 * @function render
+	 * @return {JSX.Element} returns either the text box or file drop input screens
+	 */
 	render() {
 		return (
 			<div>

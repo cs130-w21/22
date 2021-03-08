@@ -16,8 +16,8 @@ const IdleScreen = (props) => {
 		<IdleContainer>
 			<IdleImage Image src="idle.png" />
 		</IdleContainer>
-	)
-}
+	);
+};
 
 const IdleContainer = styled.div`
 	height: 100%;

@@ -16,7 +16,7 @@ class Output extends Component {
 	 * Constructor which intializes component's state
 	 * Current state includes outputState, error, classification, and summary values
 	 * @constructor
-	 * @param {object} props - updateResponse object from root app 
+	 * @param {object} props - updateResponse object from root app
 	 */
 	constructor(props) {
 		super(props);
@@ -29,18 +29,18 @@ class Output extends Component {
 	}
 
 	/**
-	* Function called to set state to incoming props
-	* @function componentWillReceiveProps
-	*/
+	 * Function called to set state to incoming props
+	 * @function componentWillReceiveProps
+	 */
 	componentWillReceiveProps(props) {
 		this.setState(props.updateResponse);
 	}
 
 	/**
-	* Function to render componnent to screen
-	* @function render
-	* @return {JSX.Element} returns a specific screen: idle, calculating, valid, or error
-	*/
+	 * Function to render componnent to screen
+	 * @function render
+	 * @return {JSX.Element} returns a specific screen: idle, calculating, valid, or error
+	 */
 	render() {
 		return (
 			<Container state={this.state.outputState}>
@@ -48,22 +48,22 @@ class Output extends Component {
 				<BelowTopBar state={this.state.outputState}>
 					{this.state.outputState == 0 && (
 						<>
-							<IdleScreen/>
+							<IdleScreen />
 						</>
 					)}
 					{this.state.outputState == 1 && (
 						<>
-							<CalculatingScreen/>
+							<CalculatingScreen />
 						</>
 					)}
 					{this.state.outputState == 2 && (
 						<>
-							<ValidScreen summary={this.state.summary} classification={this.state.classification}/>
+							<ValidScreen summary={this.state.summary} classification={this.state.classification} />
 						</>
 					)}
 					{this.state.outputState == 3 && (
 						<>
-							<ErrorScreen error={this.state.error}/>
+							<ErrorScreen error={this.state.error} />
 						</>
 					)}
 				</BelowTopBar>
@@ -80,12 +80,12 @@ class Output extends Component {
  * @return {string} - scrolling ability
  */
 let setOverflow = (value) => {
-	if(value === 1) {
-		return "none"
+	if (value === 1) {
+		return 'none';
 	} else {
-		return "scroll"
+		return 'scroll';
 	}
-}
+};
 
 const BelowTopBar = styled.div`
 	margin-left: auto;
@@ -93,7 +93,6 @@ const BelowTopBar = styled.div`
 	margin-top: 2vh;
 	margin-bottom: 2vh;
 	width: 96%;
-	padding: 0px 28px;
 	height: 69vh;
 	overflow-y: ${(props) => setOverflow(props.state)};
 `;
@@ -111,11 +110,11 @@ const TopBar = styled.div`
  */
 let setColor = (value) => {
 	if (value === 1) {
-		return colors.LIGHTEST_GRAY
+		return colors.LIGHTEST_GRAY;
 	} else {
-		return colors.WHITE
+		return colors.WHITE;
 	}
-}
+};
 
 const Container = styled.div`
 	height: 74vh;

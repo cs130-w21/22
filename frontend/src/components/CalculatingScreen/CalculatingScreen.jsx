@@ -13,43 +13,17 @@ import {colors} from '../../constants/styles';
  */
 
 const CalculatingScreen = (props) => {
-	return(
+	return (
 		<>
 			<YourEulaAnalysis>Calculating</YourEulaAnalysis>
-			<CalcHeaderWrapper> 
-				<CalcHeader>Hold On tight for<br></br>your result</CalcHeader>
-				<BigBar></BigBar>
-			</CalcHeaderWrapper>
-			<CalcTextContainer> 
-				<CalcHeaderSummary>Summary</CalcHeaderSummary>
-				<CalcBarGroup>
-					<CalcGreyBar width="50vh">.</CalcGreyBar>
-					<CalcGreyBar width="50vh">.</CalcGreyBar>
-					<CalcGreyBar width="37vh">.</CalcGreyBar>
-				</CalcBarGroup>
-				<CalcBarGroup>
-					<CalcGreyBar width="50vh">.</CalcGreyBar>
-					<CalcGreyBar width="37vh">.</CalcGreyBar>
-				</CalcBarGroup>
-				<CalcBarGroup>
-					<CalcGreyBar width="50vh">.</CalcGreyBar>
-					<CalcGreyBar width="50vh">.</CalcGreyBar>
-					<CalcGreyBar width="37vh">.</CalcGreyBar>
-				</CalcBarGroup>
-				<CalcBarGroup>
-					<CalcGreyBar width="50vh">.</CalcGreyBar>
-					<CalcGreyBar width="50vh">.</CalcGreyBar>
-					<CalcGreyBar width="37vh">.</CalcGreyBar>
-				</CalcBarGroup>
-			</CalcTextContainer>
-				
-			<CalcContainer>
-				<CalcImage Image src="calculating.png" />
-			</CalcContainer>
+			<CalculatingContainer>
+				<CalculatingBackground src="calculating_background.png" />
+				<Circle />
+				<CalcImage src="calculating.png" />
+			</CalculatingContainer>
 		</>
-	)
-	
-}
+	);
+};
 
 const YourEulaAnalysis = styled.div`
 	width: 100%;
@@ -60,26 +34,77 @@ const YourEulaAnalysis = styled.div`
 	color: ${colors.DARKER_PURPLE};
 `;
 
+const CalculatingContainer = styled.div`
+	height: 100%;
+	width: 100%;
+	position: relative;
+	top: 0;
+	left: 0;
+`;
+
+const CalculatingBackground = styled.img`
+	height: auto;
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 2vh;
+	position: relative;
+	top: 0;
+	left: 0;
+	/* border: 1px blue solid; */
+`;
+
+const Circle = styled.div`
+	height: 50vh;
+	width: 50vh;
+	position: absolute;
+	top: 2vh;
+	left: 3.5vw;
+	z-index: 2;
+	border: 3vh solid ${colors.DARK_PURPLE};
+	border-image-slice: 1;
+	border-image-source: linear-gradient(to left, #743ad5, #d53a9d);
+	--angle: 0deg;
+	border-image: linear-gradient(var(--angle), ${colors.DARK_PURPLE}, rgba(255, 255, 255, 0)) 1;
+	animation: 5s rotate linear infinite;
+	box-sizing: border-box;
+	border-radius: 50% !important;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	@keyframes rotate {
+		to {
+			--angle: 360deg;
+		}
+	}
+	@property --angle {
+		syntax: '<angle>';
+		initial-value: 0deg;
+		inherits: false;
+	}
+`;
+
+const CalcImage = styled.img`
+	height: 55vh;
+	position: absolute;
+	top: 9vh;
+	left: 10vw;
+	z-index: 4;
+	/* border: 1px green solid; */
+`;
+
 const CalcContainer = styled.div`
 	height: 100%;
 	width: 100%;
 	text-align: center;
 	position: relative;
 	overflow: hidden;
-`;
-
-const CalcImage = styled.img`
-	height: 55vh;
-	margin-left: auto;
-	margin-right: auto;
-	left: 40px;
-	position: absolute;
+	/* border: 1px solid red; */
 `;
 
 const CalcHeaderWrapper = styled.div`
 	display: grid;
-    grid-template-columns: 1fr 1fr;
-
+	grid-template-columns: 1fr 1fr;
+	/* border: solid 1px red; */
 `;
 
 const BigBar = styled.div`
@@ -115,7 +140,8 @@ const CalcHeaderSummary = styled.div`
 
 const CalcTextContainer = styled.div`
 	position: absolute;
-	overflow:hidden;
+	overflow: hidden;
+	border: solid 1px red;
 `;
 
 const CalcGreyBar = styled.div`
