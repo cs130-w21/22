@@ -23,8 +23,8 @@ jobs:
       script:
       - node -e "console.log('Hi from NodeJS!')"
       - cd frontend
-      - yarn install
-      - yarn test
+      - npm install
+      - npm test
       
       # Integration Test 
     - stage: "Even More Testing"
